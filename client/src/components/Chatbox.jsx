@@ -24,8 +24,8 @@ function Chatbox({ socket, username, room }) {
 
  return (
   <div>
-   <div className="p-2 border my-10">
-    <div className="my-5 border px-2">
+   <div className="p-2 border rounded my-10">
+    <div className="p-3">
      <h1>
       Your are connected to the room: <span className="font-bold">{room}</span>
      </h1>
@@ -33,13 +33,19 @@ function Chatbox({ socket, username, room }) {
       Logged as: <span className="font-bold">{username}</span>
      </p>
     </div>
-    <div>
-     <input
-      type="text"
-      onChange={(e) => setMessage(e.target.value)}
-      placeholder="message..."
-     />
-     <button onClick={sendMessage}>send</button>
+    <div className="pt-5">
+     <div className="w-full lg:w-[400px] p-5">
+      <div>
+       {/* {data} */}
+      </div>
+      <input
+       type="text"
+       onChange={(e) => setMessage(e.target.value)}
+       placeholder="message..."
+       className="outline-none text-xs px-2 h-8"
+      />
+      <button onClick={sendMessage}>send</button>
+     </div>
     </div>
    </div>
   </div>
