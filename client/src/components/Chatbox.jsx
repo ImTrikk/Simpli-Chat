@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 
 function Chatbox({ socket, username, room }) {
  const [message, setMessage] = useState("");
+ const [userMessage, setUserMessage] = useState("");
 
  const sendMessage = async () => {
   if (message !== "") {
@@ -18,6 +19,7 @@ function Chatbox({ socket, username, room }) {
 
  useEffect(() => {
   socket.on("message_received", (data) => {
+   setUserMessage(data.message);
    console.log(data);
   });
  }, [socket]);
@@ -35,9 +37,8 @@ function Chatbox({ socket, username, room }) {
     </div>
     <div className="pt-5">
      <div className="w-full lg:w-[400px] p-5">
-      <div>
-       {/* {data} */}
-      </div>
+      <div>{userMessage}</div>
+      
       <input
        type="text"
        onChange={(e) => setMessage(e.target.value)}

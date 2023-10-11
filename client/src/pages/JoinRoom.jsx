@@ -4,7 +4,7 @@ import { useState } from "react";
 import io from "socket.io-client";
 import Chatbox from "../components/Chatbox";
 
-const socket = io.connect("simpli-chat-server.vercel.app");
+const socket = io.connect("http://localhost:3001");
 
 function JoinRoom() {
  const [userName, setUsername] = useState("");
