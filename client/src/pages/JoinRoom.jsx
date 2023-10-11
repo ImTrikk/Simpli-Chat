@@ -10,10 +10,17 @@ function JoinRoom() {
  const [userName, setUsername] = useState("");
  const [room, setRoom] = useState("");
  const [chatbox, renderChatbox] = useState(false);
+ const [error, setError] = useState("");
 
- const joinRoom = ({ data }) => {
+
+  // !fix error handling here
+ const joinRoom = async ({ data }) => {
   if (userName !== "" && room !== "") {
    socket.emit("join_room", room);
+   socket.on("room_not_found", (error) => {
+    setError(error);
+    console.log("Room not found");
+   });
    renderChatbox(true);
   }
  };
