@@ -19,18 +19,19 @@ io.on("connection", (socket) => {
  console.log(`User connected: ${socket.id}`);
 
  // declare events
-
  socket.on("create_room", (data) => {
   socket.join(data);
   console.log(`Username: ${socket.id} room: ${data}`);
  });
 
+ // join room
  socket.on("join_room", async (data) => {
   const roomExists = io.sockets.adapter.rooms[data] !== undefined;
   if (!roomExists) {
    socket.emit("room_not_found");
    console.log("Room not found!");
   } else {
+   console.log("User joined!")
    socket.join(data);
    console.log(`Username: ${socket.id} room: ${data}`);
   }
