@@ -16,7 +16,8 @@ function JoinRoom() {
   // !fix error handling here
  const joinRoom = async ({ data }) => {
   if (userName !== "" && room !== "") {
-   socket.emit("join_room", room);
+    socket.emit("join_room", room);
+    // !only show an error when it has an error
    socket.on("room_not_found", (error) => {
     setError(error);
     console.log("Room not found");
