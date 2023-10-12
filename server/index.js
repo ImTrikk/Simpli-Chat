@@ -15,28 +15,31 @@ const io = new Server(server, {
  },
 });
 
+const existingRooms = new Set();
 io.on("connection", (socket) => {
+ // check user login
  console.log(`User connected: ${socket.id}`);
-
- // declare events
+ // declare event listeners
  socket.on("create_room", (data) => {
   socket.join(data);
   console.log(`Username: ${socket.id} room: ${data}`);
+  existingRooms.add(data);
  });
 
- // join room
- socket.on("join_room", async (data) => {
-  const roomExists = io.sockets.adapter.rooms[data] !== undefined;
-  if (!roomExists) {
-   socket.emit("room_not_found");
-   console.log("Room not found!");
+ // check if room exist
+ socket.on("join_room", (room, callback) => {
+  if (existingRooms.has(room)) {
+   socket.join(room);
+   callback(true)
+   console.log(`User joined room: ${room}`);
   } else {
-   console.log("User joined!")
-   socket.join(data);
-   console.log(`Username: ${socket.id} room: ${data}`);
+   callback(false)
+   // Handle the case when the room doesn't exist
+   console.log(`Room not found: ${room}`);
   }
  });
 
+ // create message listener
  socket.on("create_message", (data) => {
   console.log(data);
   socket.to(data.room).emit("message_received", data);

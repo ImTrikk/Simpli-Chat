@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 function Chatbox({ socket, username, room }) {
  const [message, setMessage] = useState("");
  const [userMessage, setUserMessage] = useState("");
- const [user, setUser] = useState("")
+ const [user, setUser] = useState("");
 
  const sendMessage = async () => {
   if (message !== "") {
@@ -21,7 +21,7 @@ function Chatbox({ socket, username, room }) {
  useEffect(() => {
   socket.on("message_received", (data) => {
    setUserMessage(data.message);
-   setUser(data.username)
+   setUser(data.username);
    console.log(data);
   });
  }, [socket]);
@@ -39,13 +39,14 @@ function Chatbox({ socket, username, room }) {
     </div>
     <div className="pt-5">
      <div className="w-full lg:w-[400px] p-5">
-      <div>{username}: {userMessage}</div>
-      
+      <div>
+       {username}: {userMessage}
+      </div>
       <input
        type="text"
        onChange={(e) => setMessage(e.target.value)}
        placeholder="message..."
-       className="outline-none text-xs px-2 h-8"
+       className="outline-none text-xs px-2 h-8 border border-gray-200 rounded"
       />
       <button onClick={sendMessage}>send</button>
      </div>

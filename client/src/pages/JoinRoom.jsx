@@ -9,22 +9,22 @@ const socket = io.connect("http://localhost:3001");
 function JoinRoom() {
  const [userName, setUsername] = useState("");
  const [room, setRoom] = useState("");
- const [chatbox, renderChatbox] = useState(false);
- const [error, setError] = useState("");
+ const [chatbox, setChatbox] = useState(false);
+ const [error, setError] = useState(false);
+ const [roomExist, setRoomExist] = useState(false);
 
- // !fix error handling here
  const joinRoom = async ({ data }) => {
   if (userName !== "" && room !== "") {
-   socket.emit("join_room", room);
-   // !only show an error when it has an error
-   socket.on("room_not_found", (error) => {
-    setError(error);
-    console.log("Room not found");
-   });
-   renderChatbox(true);
+   // Send a request to join the room
+    socket.emit("join_room", room, (roomExist) => {
+      if (!roomExist) {
+        setError("Room does not exist!")
+      } else {
+        setChatbox(true)
+      }
+    });
   }
  };
-
  return (
   <>
    <div>
@@ -63,6 +63,11 @@ function JoinRoom() {
       </div>
       <div>
        <div className="ml-20">
+        {error && (
+         <div className="text-red-500">
+          <p>{error}</p>
+         </div>
+        )}
         {chatbox ? (
          <Chatbox socket={socket} username={userName} room={room} />
         ) : (
