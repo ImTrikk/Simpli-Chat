@@ -52,8 +52,15 @@ io.on("connection", (socket) => {
   });
 
   // listen when the client disconnects from the socket
-  socket.on("disconnect", () => {
+  socket.on("disconnect", (data) => {
     console.log("User disconnect");
+    socket.rooms.forEach((room) => {
+      socket.to(room).emit("user_disconnected", socket.id);
+      // If you want to remove the user from the room, you can use socket.leave(room) here
+    });
+    // Remove the user from the set of existing rooms
+    existingRooms.delete(socket.id);
+    console.log("User dsconnected for good??");
   });
 });
 

@@ -3,6 +3,8 @@ import { Navbar } from "../components/Navbar";
 import { useState } from "react";
 import io from "socket.io-client";
 import Chatbox from "../components/Chatbox";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 // const socket = io.connect("https://simpli-chat-server.vercel.app");
 const socket = io.connect("http://localhost:3001");
@@ -15,6 +17,16 @@ const CreateRoom = () => {
   const createRoom = ({ data }) => {
     if (userName !== "" && room !== "") {
       socket.emit("create_room", room);
+      toast.success(`Room created: ${room}`, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
       renderChatbox(true);
     }
   };
@@ -23,6 +35,7 @@ const CreateRoom = () => {
     <>
       <div>
         <Navbar />
+        <ToastContainer autoClose={2000} />
         <div className="mx-20">
           <div className="md:flex items-center">
             {chatbox ? (

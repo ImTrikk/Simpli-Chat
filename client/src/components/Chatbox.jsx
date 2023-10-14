@@ -26,6 +26,10 @@ function Chatbox({ socket, username, room }) {
     }
   };
 
+  const handleDisconnect = () => {
+    socket.emit("disconnect");
+  };
+
   useEffect(() => {
     const sendMessage = (data) => {
       setUserMessageList((list) => [...list, data]);
@@ -98,6 +102,15 @@ function Chatbox({ socket, username, room }) {
                 className="bg-blue-500 text-white px-2 rounded h-8"
               >
                 send
+              </button>
+            </div>
+            <div>
+              <button
+                onClick={handleDisconnect}
+                
+                className="border border-red-500 text-red-500 px-2 h-8 rounded"
+              >
+                Disconnect
               </button>
             </div>
           </div>

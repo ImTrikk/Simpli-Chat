@@ -3,6 +3,8 @@ import { Navbar } from "../components/Navbar";
 import { useState } from "react";
 import io from "socket.io-client";
 import Chatbox from "../components/Chatbox";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const socket = io.connect("http://localhost:3001");
 
@@ -20,6 +22,16 @@ function JoinRoom() {
           setError("Room does not exist!");
         } else {
           setError(null);
+          toast.success(`Joined the room: ${room}`, {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
           setChatbox(true);
         }
       });
@@ -29,6 +41,7 @@ function JoinRoom() {
     <>
       <div>
         <Navbar />
+        <ToastContainer autoClose={2000} />
         <div className="mx-20">
           <div className="md:flex items-center justify-center">
             {chatbox ? (
@@ -72,11 +85,7 @@ function JoinRoom() {
                 </div>
               )}
               {chatbox ? (
-                <Chatbox
-                  socket={socket}
-                  username={userName}
-                  room={room}
-                />
+                <Chatbox socket={socket} username={userName} room={room} />
               ) : (
                 ""
               )}
