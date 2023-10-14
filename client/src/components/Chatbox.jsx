@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import ScrollToBottom from "react-scroll-to-bottom";
 
 function Chatbox({ socket, username, room }) {
   const [message, setMessage] = useState("");
@@ -51,34 +52,36 @@ function Chatbox({ socket, username, room }) {
         </div>
         <div className="pt-5">
           <div className="w-full lg:w-[400px] p-3">
-            <div className="w-[200px]">
-              {/* add messsage builder */}
-              {userMessageList.map((message) => (
-                <div
-                  className={`message-container ${
-                    username === message.username
-                      ? "message-you"
-                      : "message-other"
-                  }`}
-                  key={message.time}
-                >
-                  <div className="bg-gray-100 rounded p-2 mt-4">
-                    <div className="flex items-center gap-2">
-                      <p className="text-xs text-gray-400" id="username">
-                        {message.username}
+            <div className="w-full">
+              <ScrollToBottom className=" h-[300px]">
+                {userMessageList.map((message) => (
+                  <div
+                    className={` ${
+                      username === message.username
+                        ? "flex justify-end pr-2"
+                        : "flex"
+                    }`}
+                    key={message.time}
+                  >
+                    <div className="bg-gray-100 rounded p-2 mt-4">
+                      <div className="flex items-center gap-2">
+                        <p className="text-xs text-gray-400" id="username">
+                          {username === message.username
+                            ? "You"
+                            : message.username}
+                          :
+                        </p>
+                      </div>
+                      <div className="flex text-sm">
+                        <p>{message.message}</p>
+                      </div>
+                      <p className="text-xs text-gray-400" id="time">
+                        {"sent at " + message.time}
                       </p>
                     </div>
-                    <div className="text-sm">
-                      <p>{message.message}</p>
-                    </div>
                   </div>
-                  <div>
-                    <p className="text-xs text-gray-400" id="time">
-                      {"sent " + message.time}
-                    </p>
-                  </div>
-                </div>
-              ))}
+                ))}
+              </ScrollToBottom>
             </div>
             <div className="flex justify-end gap-2 pt-5">
               <input
