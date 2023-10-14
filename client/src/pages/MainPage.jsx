@@ -23,8 +23,16 @@ const MainPage = () => {
          </button>
         </Link>
         <Link to="/join-room">
-         <button className="bg-blue-500 px-4 h-10 rounded text-white font-semibold">
+         <button className="border border-blue-500 px-4 h-10 rounded text-blue-500 font-semibold">
           Join chat room
+         </button>
+        </Link>
+       </div>
+       {/* put linear gradient background here */}
+       <div className="text-center pt-5">
+        <Link to="/random-chat">
+         <button className="bg-blue-500 px-4 h-10 rounded text-white font-semibold">
+          -Random Chat-
          </button>
         </Link>
        </div>

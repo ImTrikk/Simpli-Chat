@@ -64,7 +64,7 @@ const CreateRoom = () => {
        </div>
       </div>
      </div>
-    </div>
+    </div> 
    </div>
   </>
  );

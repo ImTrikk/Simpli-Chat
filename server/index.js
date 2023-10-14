@@ -15,7 +15,9 @@ const io = new Server(server, {
  },
 });
 
+// stores all existing rooms
 const existingRooms = new Set();
+
 io.on("connection", (socket) => {
  // check user login
  console.log(`User connected: ${socket.id}`);
@@ -27,19 +29,23 @@ io.on("connection", (socket) => {
  });
 
  // check if room exist
+ // ? when user joins, add their id and username also to pass it back to the  front end
  socket.on("join_room", (room, callback) => {
   if (existingRooms.has(room)) {
    socket.join(room);
-   callback(true)
+   callback(true);
+   // add loggd user for rendering in the front end
+   socket.emit("")
    console.log(`User joined room: ${room}`);
   } else {
-   callback(false)
+   callback(false);
    // Handle the case when the room doesn't exist
    console.log(`Room not found: ${room}`);
   }
  });
 
  // create message listener
+ // ? when user joins, add their id and username also to pass it back to the  front end
  socket.on("create_message", (data) => {
   console.log(data);
   socket.to(data.room).emit("message_received", data);
@@ -49,6 +55,10 @@ io.on("connection", (socket) => {
   console.log("User disconnect");
  });
 });
+
+// create socket for random chatting
+// 2 users can wait and then connect directly
+
 
 server.listen(3001, () => {
  console.log("Server running on port 3001");

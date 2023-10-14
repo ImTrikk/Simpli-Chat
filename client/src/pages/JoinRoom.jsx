@@ -12,17 +12,18 @@ function JoinRoom() {
  const [chatbox, setChatbox] = useState(false);
  const [error, setError] = useState(false);
  const [roomExist, setRoomExist] = useState(false);
+ const [joinedUsers, setjoinedUsers] = useState(false);
 
  const joinRoom = async ({ data }) => {
   if (userName !== "" && room !== "") {
    // Send a request to join the room
-    socket.emit("join_room", room, (roomExist) => {
-      if (!roomExist) {
-        setError("Room does not exist!")
-      } else {
-        setChatbox(true)
-      }
-    });
+   socket.emit("join_room", room, (roomExist) => {
+    if (!roomExist) {
+     setError("Room does not exist!");
+    } else {
+     setChatbox(true);
+    }
+   });
   }
  };
  return (
@@ -30,7 +31,7 @@ function JoinRoom() {
    <div>
     <Navbar />
     <div className="mx-20">
-     <div className="flex items-center justify-center">
+     <div className="md:flex items-center justify-center">
       <div className="pt-20">
        <h1 className="text-blue-500 text-4xl font-black">Join Chat Room</h1>
        <p
@@ -61,19 +62,17 @@ function JoinRoom() {
         </button>
        </div>
       </div>
-      <div>
-       <div className="ml-20">
-        {error && (
-         <div className="text-red-500">
-          <p>{error}</p>
-         </div>
-        )}
-        {chatbox ? (
-         <Chatbox socket={socket} username={userName} room={room} />
-        ) : (
-         ""
-        )}
-       </div>
+      <div className="md:ml-20 pt-10">
+       {error && (
+        <div className="text-red-500">
+         <p>{error}</p>
+        </div>
+       )}
+       {chatbox ? (
+        <Chatbox socket={socket} username={userName} room={room} />
+       ) : (
+        ""
+       )}
       </div>
      </div>
     </div>
