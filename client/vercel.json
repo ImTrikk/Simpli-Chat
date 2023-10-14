@@ -1,0 +1,5 @@
+[
+ rewrites: {
+  "/src/page/mainpage.jsx"
+ }
+]
