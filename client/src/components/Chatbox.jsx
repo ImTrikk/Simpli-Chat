@@ -30,10 +30,7 @@ function Chatbox({ socket, username, room }) {
     const sendMessage = (data) => {
       setUserMessageList((list) => [...list, data]);
     };
-
     socket.on("message_received", sendMessage);
-
-    // Clean up the event listener when the component unmounts
     return () => {
       socket.off("message_received", sendMessage);
     };
@@ -63,17 +60,19 @@ function Chatbox({ socket, username, room }) {
                     }`}
                     key={message.time}
                   >
-                    <div className="bg-gray-100 rounded p-2 mt-4">
-                      <div className="flex items-center gap-2">
-                        <p className="text-xs text-gray-400" id="username">
-                          {username === message.username
-                            ? "You"
-                            : message.username}
-                          :
-                        </p>
-                      </div>
-                      <div className="flex text-sm">
-                        <p>{message.message}</p>
+                    <div className=" p-2 mt-4">
+                      <div className="bg-gray-100 p-2 rounded">
+                        <div className="flex items-center gap-2">
+                          <p className="text-xs text-gray-400" id="username">
+                            {username === message.username
+                              ? "You"
+                              : message.username}
+                            :
+                          </p>
+                        </div>
+                        <div className="flex text-sm">
+                          <p>{message.message}</p>
+                        </div>
                       </div>
                       <p className="text-xs text-gray-400" id="time">
                         {"sent at " + message.time}
