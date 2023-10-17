@@ -7,7 +7,6 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 // const socket = io.connect("http://localhost:3001");
- const socket = io.connect("https://simpli-chat-server.vercel.app/");
 
 function JoinRoom() {
  const [userName, setUsername] = useState("");
@@ -15,6 +14,7 @@ function JoinRoom() {
  const [chatbox, setChatbox] = useState(false);
  const [error, setError] = useState(false);
 
+ const socket = io.connect("https://simpli-chat-server.vercel.app/");
  const joinRoom = () => {
   if (userName !== "" && room !== "") {
    // Send a request to join the room
