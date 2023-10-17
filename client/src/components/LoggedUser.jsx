@@ -3,7 +3,7 @@ import { FaUsers } from "react-icons/fa";
 import { BsFillPersonFill } from "react-icons/bs";
 
 export const LoggedUser = ({ socket, room, username }) => {
- const [listUser, setListUser] = useState([]);
+ const [listUser, setListUser] = useState([username]);
 
  useEffect(() => {
   const handleUserJoined = (user) => {

@@ -20,10 +20,13 @@ const existingRooms = new Map();
 
 io.on("connection", (socket) => {
  // listener for creating chat rooms
- socket.on("create_room", (data) => {
+ socket.on("create_room", (data, username) => {
   socket.join(data);
-  existingRooms.set(data, 0);
+  console.log("username", username);
+  console.log("data", data);
+  existingRooms.set(data, 1);
   console.log(`UserID: ${socket.id} room: ${data}`);
+  socket.to(data).emit("user_joined", username);
   // existingRooms.add(data);
   console.log("Room after creatin a room: ", existingRooms);
  });
@@ -32,7 +35,7 @@ io.on("connection", (socket) => {
   if (existingRooms.has(room)) {
    socket.join(room);
    socket.to(room).emit("user_joined", user);
-    existingRooms.set(room, existingRooms.get(room) + 1); 
+   existingRooms.set(room, existingRooms.get(room) + 1);
    console.log("user_joined: ", user);
    console.log(`User joined room: ${room}`);
    callback(true);
@@ -55,17 +58,16 @@ io.on("connection", (socket) => {
   const userCount = existingRooms.get(room);
   if (userCount > 0) {
    existingRooms.set(room, userCount - 1); // Decrement user count
-   if (userCount === 1) {
+   if (userCount === 0) {
     // If no more users, delete the room
-    existingRooms.delete(room);
+    existingRooms.clear(data);
    }
   }
  });
 
  // listen when the client disconnects from the socket
- socket.on("disconnect", (data) => {
+ socket.on("disconnect", (room) => {
   console.log("User disconnect");
-  // existingRooms.clear();
  });
 
  socket.on("delete_room", (data) => {
