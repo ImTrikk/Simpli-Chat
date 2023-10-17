@@ -46,6 +46,12 @@ io.on("connection", (socket) => {
   socket.to(data.room).emit("message_received", data);
  });
 
+ socket.on("user_left", (data) => {
+  const { room, username } = data;
+  socket.leave(room);
+  socket.to(room).emit("user_left", username);
+ });
+
  // listen when the client disconnects from the socket
  socket.on("disconnect", (data) => {
   console.log("User disconnect");

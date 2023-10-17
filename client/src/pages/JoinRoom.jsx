@@ -22,7 +22,7 @@ function JoinRoom() {
      setError("Room does not exist!");
      toast.error(`Room: ${room} does not exist`, {
       position: "top-right",
-      autoClose: 5000,
+      autoClose: 2000,
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: true,

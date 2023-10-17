@@ -1,26 +1,40 @@
+import { useEffect } from "react";
 import { BsFillPersonFill } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-export const UserSidebar = ({ socket, username }) => {
+export const UserSidebar = ({ socket, username, room }) => {
  const navHome = useNavigate();
-
  const handleDisconnect = () => {
-  toast.info(`Leaving room`, {
-   position: "top-center",
-   autoClose: 2000,
-   hideProgressBar: false,
-   closeOnClick: true,
-   pauseOnHover: true,
-   draggable: true,
-   progress: undefined,
-   theme: "light",
-  });
+  socket.emit("user_left", { room, username });
+  // Handling user when leaving the room
   setTimeout(() => {
    navHome("/");
   }, 3000);
+  return () => {
+   socket.off("user_left"); // Remove the event listener when the component unmounts
+  };
  };
+
+ useEffect(() => {
+  socket.on("user_left", (user) => {
+   toast.info(`User: ${user} has left the room`, {
+    position: "top-center",
+    autoClose: 2000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "light",
+   });
+  });
+
+  return () => {
+   socket.off("user_left");
+  };
+ }, [socket]);
 
  return (
   <>

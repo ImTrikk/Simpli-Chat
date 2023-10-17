@@ -31,7 +31,9 @@ function Chatbox({ socket, username, room }) {
   const sendMessage = (data) => {
    setUserMessageList((list) => [...list, data]);
   };
+
   socket.on("message_received", sendMessage);
+
   socket.on("user_joined", (user) => {
    setJoinedUserMessage(`---${user} joined the chat---`);
    toast.info(`${user} has joined the chat room`, {
@@ -44,13 +46,30 @@ function Chatbox({ socket, username, room }) {
     progress: undefined,
     theme: "light",
    });
+
    setTimeout(() => {
     setJoinedUserMessage("");
    }, 3000);
   });
+
+  // // handling user when leaving the room
+  // socket.on("user_left", (user) => {
+  //  toast.info(`${user} has left the chat room`, {
+  //   position: "top-center",
+  //   autoClose: 2000,
+  //   hideProgressBar: false,
+  //   closeOnClick: true,
+  //   pauseOnHover: true,
+  //   draggable: true,
+  //   progress: undefined,
+  //   theme: "light",
+  //  });
+  // });
+
   return () => {
    socket.off("message_received", sendMessage);
    socket.off("user_joined");
+   //  socket.off("user_left");
   };
  }, [socket]);
 
@@ -59,7 +78,7 @@ function Chatbox({ socket, username, room }) {
    <ToastContainer autoClose={2000} />
    <div className="lg:flex items-start pt-10">
     <div className="rounded-l h-[500px]">
-     <UserSidebar socket={socket} username={username} />
+     <UserSidebar socket={socket} username={username} room={room} />
     </div>
     <div className="bg-gray-100 border-t border-b md:w-[500px] h-[500px] relative">
      <div className="p-4 border-b border-gray-300 h-[50px] flex items-center">
