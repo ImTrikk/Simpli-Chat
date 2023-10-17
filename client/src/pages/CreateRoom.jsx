@@ -6,7 +6,6 @@ import Chatbox from "../components/Chatbox";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const socket = io.connect("https://simpli-chat-server.vercel.app/");
 // const socket = io.connect("http://localhost:3001");
 
 const CreateRoom = () => {
@@ -16,6 +15,7 @@ const CreateRoom = () => {
  const [disconnect, setDisconnect] = useState(false);
 
  const createRoom = ({ data }) => {
+  const socket = io.connect("https://simpli-chat-server.vercel.app/");
   if (userName !== "" && room !== "") {
    socket.emit("create_room", room, userName);
    toast.success(`Room created: ${room}`, {
