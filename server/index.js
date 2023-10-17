@@ -80,6 +80,7 @@ io.on("connection", (socket) => {
  // listen when the client disconnects from the socket
  socket.on("disconnect", (room) => {
   console.log("User disconnect");
+  existingUsers.clear();
  });
 
  socket.on("delete_room", (data) => {
