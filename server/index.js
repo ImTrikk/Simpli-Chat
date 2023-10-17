@@ -52,7 +52,7 @@ io.on("connection", (socket) => {
  });
 
  socket.on("all_usernames", () => {
-  console.log("Test all users")
+  console.log("Test all users");
   const usernames = Array.from(existingUsers.keys());
   socket.emit("all_usernames", usernames);
  });
@@ -66,6 +66,7 @@ io.on("connection", (socket) => {
   const { room, username } = data;
   socket.leave(room);
   socket.to(room).emit("user_left", username);
+  existingUsers.delete(username);
   const userCount = existingRooms.get(room);
   if (userCount > 0) {
    existingRooms.set(room, userCount - 1); // Decrement user count
