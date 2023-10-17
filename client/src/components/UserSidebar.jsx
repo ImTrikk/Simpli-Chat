@@ -1,39 +1,30 @@
 import { BsFillPersonFill } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export const UserSidebar = ({ socket, username }) => {
  const navHome = useNavigate();
 
  const handleDisconnect = () => {
+  toast.info(`Leaving room`, {
+   position: "top-center",
+   autoClose: 2000,
+   hideProgressBar: false,
+   closeOnClick: true,
+   pauseOnHover: true,
+   draggable: true,
+   progress: undefined,
+   theme: "light",
+  });
   setTimeout(() => {
    navHome("/");
-  }, 2000);
- };
-
- const renderActionButton = () => {
-  if (username) {
-   return (
-    <button
-     onClick={handleDisconnect}
-     className="bg-red-600 text-white text-xs px-4 w-[100px] h-8 rounded"
-    >
-     Delete room
-    </button>
-   );
-  } else {
-   return (
-    <button
-     onClick={handleDisconnect}
-     className="bg-blue-600 text-white text-xs px-4 w-[100px] h-8 rounded"
-    >
-     Disconnect
-    </button>
-   );
-  }
+  }, 3000);
  };
 
  return (
   <>
+   <ToastContainer />
    <div className="w-full bg-blue-500 rounded-l h-full relative">
     <div className=" flex items-center justify-between rounded-l w-[150px]">
      <div className="p-3 w-full flex items-center">
@@ -46,11 +37,16 @@ export const UserSidebar = ({ socket, username }) => {
      </div>
      <div>
       <p className="text-xl font-bold">{username}</p>
-      <p className="text-xs">creator</p>
+      <p className="text-xs">username</p>
      </div>
     </div>
     <div className="p-3 text-center absolute bottom-0 left-0 right-0">
-     {renderActionButton()}
+     <button
+      onClick={handleDisconnect}
+      className="bg-blue-600 text-white text-xs px-4 w-[100px] h-8 rounded"
+     >
+      Disconnect
+     </button>
     </div>
    </div>
   </>

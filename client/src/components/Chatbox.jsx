@@ -27,35 +27,26 @@ function Chatbox({ socket, username, room }) {
   }
  };
 
- const navHome = useNavigate();
-
- const handleDisconnect = () => {
-  toast.info("Disconnected from the room", {
-   position: "top-right",
-   autoClose: 1000,
-   hideProgressBar: false,
-   closeOnClick: true,
-   pauseOnHover: true,
-   draggable: true,
-   progress: undefined,
-   theme: "light",
-  });
-  // socket.emit("disconnect");
-  setTimeout(() => {
-   navHome("/");
-  }, 3000);
- };
-
  useEffect(() => {
   const sendMessage = (data) => {
    setUserMessageList((list) => [...list, data]);
   };
   socket.on("message_received", sendMessage);
-   socket.on("user_joined", (user) => {
-     setJoinedUserMessage(`---${user} joined the chat---`);
-     setTimeout(() => {
-       setJoinedUserMessage("")
-     }, 3000)
+  socket.on("user_joined", (user) => {
+   setJoinedUserMessage(`---${user} joined the chat---`);
+   toast.info(`${user} has joined the chat room`, {
+    position: "top-center",
+    autoClose: 2000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "light",
+   });
+   setTimeout(() => {
+    setJoinedUserMessage("");
+   }, 3000);
   });
   return () => {
    socket.off("message_received", sendMessage);

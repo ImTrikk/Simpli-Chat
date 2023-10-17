@@ -24,7 +24,6 @@ io.on("connection", (socket) => {
   socket.join(data);
   console.log(`UserID: ${socket.id} room: ${data}`);
   existingRooms.add(data);
-  socket.to(room).emit("user_joined", data.username);
   console.log("Room after creatin a room: ", existingRooms);
  });
 

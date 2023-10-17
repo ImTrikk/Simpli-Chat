@@ -10,26 +10,24 @@ export const LoggedUser = ({ socket, username }) => {
    setListUser((messages) => [...messages, `${user}`]);
   };
   socket.on("user_joined", handleUserJoined);
+  return () => {
+   socket.off("user_joined", handleUserJoined);
+  };
+ }, [socket]);
 
-  console.log(handleUserJoined);
-   return () => {
-    socket.off("user_joined", handleUserJoined);
-   };
-  }, [socket]);
-
-  return (
-   <>
-    <div className="w-full">
-     <div className="bg-blue-500 flex items-center justify-between rounded-tr h-[50px] w-[250px]">
-      <div className="p-3 w-full flex items-center justify-between">
-       <div className="flex items-center gap-2">
-        <FaUsers className="text-white text-2xl" />{" "}
-        <span className="text-white">|</span>
-       </div>
-       <p className="text-2xl font-bold text-white">{listUser.length}</p>
+ return (
+  <>
+   <div className="w-full">
+    <div className="bg-blue-500 flex items-center justify-between rounded-tr h-[50px] w-[250px]">
+     <div className="p-3 w-full flex items-center justify-between">
+      <div className="flex items-center gap-2">
+       <FaUsers className="text-white text-2xl" />{" "}
+       <span className="text-white">|</span>
       </div>
+      <p className="text-2xl font-bold text-white">{listUser.length}</p>
      </div>
-     <div className="p-2 space-y-2">
+    </div>
+    <div className="p-2 space-y-2">
      {listUser.map((user, index) => (
       <div className="flex items-center" id={index}>
        <div className="border border-blue-500 rounded w-8 h-8 flex items-center justify-center">
