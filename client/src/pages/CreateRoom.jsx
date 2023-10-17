@@ -13,9 +13,9 @@ const CreateRoom = () => {
  const [room, setRoom] = useState("");
  const [chatbox, renderChatbox] = useState(false);
  const [disconnect, setDisconnect] = useState(false);
+ const socket = io.connect("https://simpli-chat-server.vercel.app/");
 
  const createRoom = ({ data }) => {
-  const socket = io.connect("https://simpli-chat-server.vercel.app/");
   if (userName !== "" && room !== "") {
    socket.emit("create_room", room, userName);
    toast.success(`Room created: ${room}`, {
