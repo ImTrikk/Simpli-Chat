@@ -5,6 +5,7 @@ import io from "socket.io-client";
 import Chatbox from "../components/Chatbox";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import socket from "../../socket/socket";
 
 // const socket = io.connect("http://localhost:3001");
 
@@ -14,11 +15,13 @@ function JoinRoom() {
  const [chatbox, setChatbox] = useState(false);
  const [error, setError] = useState(false);
 
- const socket = io.connect("https://simpli-chat-server.vercel.app/");
+ // const socket = io.connect("https://simpli-chat-server.vercel.app/");
+
+ const socketHelper = socket;
  const joinRoom = () => {
   if (userName !== "" && room !== "") {
    // Send a request to join the room
-   socket.emit("join_room", room, userName, (roomExist) => {
+  socketHelper.emit("join_room", room, userName, (roomExist) => {
     if (!roomExist) {
      setError("Room does not exist!");
      toast.error(`Room: ${room} does not exist`, {
@@ -33,7 +36,7 @@ function JoinRoom() {
      });
     } else {
      setError(null);
-     socket.emit("all_usernames");
+    socketHelper.emit("all_usernames");
      toast.success(`Joined the room: ${room}`, {
       position: "top-right",
       autoClose: 2000,

@@ -1,10 +1,11 @@
 import React from "react";
 import { Navbar } from "../components/Navbar";
 import { useState } from "react";
-import io from "socket.io-client";
+// import io from "socket.io-client";
 import Chatbox from "../components/Chatbox";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import socket from "../../socket/socket";
 
 // const socket = io.connect("http://localhost:3001");
 
@@ -13,11 +14,13 @@ const CreateRoom = () => {
  const [room, setRoom] = useState("");
  const [chatbox, renderChatbox] = useState(false);
  const [disconnect, setDisconnect] = useState(false);
- const socket = io.connect("https://simpli-chat-server.vercel.app/");
+ // const socket = io.connect("https://simpli-chat-server.vercel.app/");
+
+ const socketHelper = socket;
 
  const createRoom = ({ data }) => {
   if (userName !== "" && room !== "") {
-   socket.emit("create_room", room, userName);
+   socketHelper.emit("create_room", room, userName);
    toast.success(`Room created: ${room}`, {
     position: "top-right",
     autoClose: 1000,
@@ -31,7 +34,7 @@ const CreateRoom = () => {
    renderChatbox(true);
   }
   return () => {
-   socket.off("create_room");
+   socketHelper.off("create_room");
   };
  };
 
