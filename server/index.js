@@ -16,14 +16,15 @@ const io = new Server(server, {
 });
 
 // stores all existing rooms
-const existingRooms = new Set();
+const existingRooms = new Map();
 
 io.on("connection", (socket) => {
  // listener for creating chat rooms
  socket.on("create_room", (data) => {
   socket.join(data);
+  existingRooms.set(data, 0);
   console.log(`UserID: ${socket.id} room: ${data}`);
-  existingRooms.add(data);
+  // existingRooms.add(data);
   console.log("Room after creatin a room: ", existingRooms);
  });
 
@@ -31,6 +32,7 @@ io.on("connection", (socket) => {
   if (existingRooms.has(room)) {
    socket.join(room);
    socket.to(room).emit("user_joined", user);
+    existingRooms.set(room, existingRooms.get(room) + 1); 
    console.log("user_joined: ", user);
    console.log(`User joined room: ${room}`);
    callback(true);
@@ -50,6 +52,14 @@ io.on("connection", (socket) => {
   const { room, username } = data;
   socket.leave(room);
   socket.to(room).emit("user_left", username);
+  const userCount = existingRooms.get(room);
+  if (userCount > 0) {
+   existingRooms.set(room, userCount - 1); // Decrement user count
+   if (userCount === 1) {
+    // If no more users, delete the room
+    existingRooms.delete(room);
+   }
+  }
  });
 
  // listen when the client disconnects from the socket

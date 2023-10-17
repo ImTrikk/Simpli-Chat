@@ -7,14 +7,21 @@ export const LoggedUser = ({ socket, room, username }) => {
 
  useEffect(() => {
   const handleUserJoined = (user) => {
-   setListUser((messages) => [...messages, `${user}`]);
+   setListUser((users) => [...users, user]);
   };
+
+  const handleUserLeft = (leftUser) => {
+   setListUser((users) => users.filter((user) => user !== leftUser));
+  };
+
   socket.on("user_joined", handleUserJoined);
+  socket.on("user_left", handleUserLeft);
+
   return () => {
    socket.off("user_joined", handleUserJoined);
+   socket.off("user_left", handleUserLeft);
   };
  }, [socket]);
-
  return (
   <>
    <div className="w-full">
@@ -29,7 +36,7 @@ export const LoggedUser = ({ socket, room, username }) => {
     </div>
     <div className="p-2 space-y-2">
      {listUser.map((user, index) => (
-      <div className="flex items-center" id={index}>
+      <div className="flex items-center" key={index}>
        <div className="border border-blue-500 rounded w-8 h-8 flex items-center justify-center">
         <BsFillPersonFill className="text-blue-500" />
        </div>
