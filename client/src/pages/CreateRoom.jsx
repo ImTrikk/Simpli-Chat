@@ -30,6 +30,9 @@ const CreateRoom = () => {
    });
    renderChatbox(true);
   }
+  return () => {
+   socket.off("create_room");
+  };
  };
 
  return (
