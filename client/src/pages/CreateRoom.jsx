@@ -18,7 +18,7 @@ const CreateRoom = () => {
 
  const createRoom = ({ data }) => {
   if (userName !== "" && room !== "") {
-   socket.emit("create_room", room);
+   socket.emit("create_room", room, userName);
    toast.success(`Room created: ${room}`, {
     position: "top-right",
     autoClose: 1000,
@@ -37,7 +37,7 @@ const CreateRoom = () => {
   <>
    <div>
     <Navbar />
-    <ToastContainer autoClose={2000} />
+    <ToastContainer autoClose={1000} />
     <div className="mx-10 md:mx-20">
      <div className="flex items-center justify-center">
       {chatbox ? (

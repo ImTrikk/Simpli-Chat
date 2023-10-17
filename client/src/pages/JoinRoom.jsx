@@ -17,11 +17,9 @@ function JoinRoom() {
  const joinRoom = () => {
   if (userName !== "" && room !== "") {
    // Send a request to join the room
-   socket.on();
-   socket.emit("join_room", room, (roomExist) => {
+   socket.emit("join_room", room, userName, (roomExist) => {
     if (!roomExist) {
      setError("Room does not exist!");
-     setError(null);
      toast.error(`Room: ${room} does not exist`, {
       position: "top-right",
       autoClose: 5000,
@@ -36,7 +34,7 @@ function JoinRoom() {
      setError(null);
      toast.success(`Joined the room: ${room}`, {
       position: "top-right",
-      autoClose: 5000,
+      autoClose: 2000,
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: true,
@@ -53,7 +51,7 @@ function JoinRoom() {
   <>
    <div>
     <Navbar />
-    <ToastContainer autoClose={2000} />
+    <ToastContainer autoClose={1000} />
     <div className="mx-10 md:mx-20">
      <div className="md:flex items-center justify-center">
       {chatbox ? (

@@ -8,9 +8,8 @@ import { UserSidebar } from "./UserSidebar";
 
 function Chatbox({ socket, username, room }) {
  const [message, setMessage] = useState("");
- const [userMessage, setUserMessage] = useState("");
  const [userMessageList, setUserMessageList] = useState([]);
- const [joinedUserMessage, setJoinedUserMessage] = useState("");
+ const [joinedUserMessages, setJoinedUserMessage] = useState("");
 
  // modify the user messages id to get the different names
  const sendMessage = async () => {
@@ -52,28 +51,14 @@ function Chatbox({ socket, username, room }) {
    setUserMessageList((list) => [...list, data]);
   };
   socket.on("message_received", sendMessage);
+   socket.on("user_joined", (user) => {
+     setJoinedUserMessage(`---${user} joined the chat---`);
+     setTimeout(() => {
+       setJoinedUserMessage("")
+     }, 3000)
+  });
   return () => {
    socket.off("message_received", sendMessage);
-  };
- }, [socket]);
-
- useEffect(() => {
-  // Listen for the "user_joined" event
-  socket.on("user_joined", (user) => {
-   toast.info(`${user.username} joined the chat`, {
-    position: "top-right",
-    autoClose: 2000, // Adjust the time the toast message is displayed
-    hideProgressBar: false,
-    closeOnClick: true,
-    pauseOnHover: true,
-    draggable: true,
-    progress: undefined,
-    theme: "light",
-   });
-  }, [socket]);
-
-  // Cleanup by removing the event listener when the component unmounts
-  return () => {
    socket.off("user_joined");
   };
  }, [socket]);
@@ -90,32 +75,24 @@ function Chatbox({ socket, username, room }) {
       <h1 className="text-gray-500 text-sm font-medium">
        <span className="font-bold">#{room}</span>
       </h1>
-      {/* <p className="text-white text-xs">
-       Logged as: <span className="font-bold">{username}</span>
-      </p> */}
+      <div className="ml-32 text-xs text-gray-500">{joinedUserMessages}</div>
      </div>
      <div className="w-full bg-gray-100 p-3 h-auto">
       <ScrollToBottom className="scroll-bar h-[380px]">
-       <div className="text-center text-gray-400 text-xs">
-        ---room created---
-       </div>
-       <div className="text-center text-gray-400 text-xs">
-        {joinedUserMessage}
-       </div>
-       {userMessageList.map((message) => (
+       {userMessageList.map((message, index) => (
         <div
          className={` ${
           username === message.username ? "flex justify-end pr-2" : "flex"
          }`}
          id={username}
-         key={message.time.seconds}
+         key={`userMessage-${index}`}
         >
-         <div className="p-2 mt-2">
+         <div className="p-2">
           <div
            className={`${
             username === message.username
-             ? "bg-blue-500 text-white p-3 rounded-t-lg rounded-bl-xl max-w-[300px]"
-             : "bg-gray-200 text-gray-500 p-3  rounded-t-xl rounded-br-xl max-w-[300px]"
+             ? "bg-blue-500 text-white px-3 py-2 rounded-t-lg rounded-bl-xl max-w-[300px]"
+             : "bg-gray-200 text-gray-500 px-3 py-2  rounded-t-xl rounded-br-xl max-w-[300px]"
            }`}
           >
            <div className="flex items-center gap-2">
@@ -163,7 +140,7 @@ function Chatbox({ socket, username, room }) {
      </div>
     </div>
     <div className="border-l border-r border-b rounded-r h-[500px]">
-     <LoggedUser socket={socket} />
+     <LoggedUser socket={socket} username={username} />
     </div>
    </div>
   </div>

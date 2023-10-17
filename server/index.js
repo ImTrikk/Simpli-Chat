@@ -24,26 +24,22 @@ io.on("connection", (socket) => {
   socket.join(data);
   console.log(`UserID: ${socket.id} room: ${data}`);
   existingRooms.add(data);
+  socket.to(room).emit("user_joined", data.username);
   console.log("Room after creatin a room: ", existingRooms);
  });
 
- socket.on("join_room", (room, callback) => {
+ socket.on("join_room", (room, user, callback) => {
   if (existingRooms.has(room)) {
    socket.join(room);
-   callback(true);
-   socket.on("logged_user", (data) => {
-    socket.to(data.room).emit("User in room", data);
-   });
+   socket.to(room).emit("user_joined", user);
+   console.log("user_joined: ", user);
    console.log(`User joined room: ${room}`);
+   callback(true);
   } else {
-   callback(false);
-   // Handle the case when the room doesn't exist
-   console.log(`Room not found: ${room}`);
+   if (typeof callback === "function") {
+    callback(false);
+   }
   }
- });
-
- socket.on("user_joined", (data) => {
-  socket.to(data.room).emit("user_joined", data);
  });
 
  socket.on("create_message", (data) => {
@@ -54,8 +50,12 @@ io.on("connection", (socket) => {
  // listen when the client disconnects from the socket
  socket.on("disconnect", (data) => {
   console.log("User disconnect");
-  existingRooms.clear();
-  console.log("Rooms cleared....");
+  // existingRooms.clear();
+ });
+
+ socket.on("delete_room", (data) => {
+  existingRooms.clear(data);
+  console.log("Deleted rooms");
  });
 });
 

@@ -1,6 +1,37 @@
 import { BsFillPersonFill } from "react-icons/bs";
+import { useNavigate } from "react-router-dom";
 
 export const UserSidebar = ({ socket, username }) => {
+ const navHome = useNavigate();
+
+ const handleDisconnect = () => {
+  setTimeout(() => {
+   navHome("/");
+  }, 2000);
+ };
+
+ const renderActionButton = () => {
+  if (username) {
+   return (
+    <button
+     onClick={handleDisconnect}
+     className="bg-red-600 text-white text-xs px-4 w-[100px] h-8 rounded"
+    >
+     Delete room
+    </button>
+   );
+  } else {
+   return (
+    <button
+     onClick={handleDisconnect}
+     className="bg-blue-600 text-white text-xs px-4 w-[100px] h-8 rounded"
+    >
+     Disconnect
+    </button>
+   );
+  }
+ };
+
  return (
   <>
    <div className="w-full bg-blue-500 rounded-l h-full relative">
@@ -10,7 +41,7 @@ export const UserSidebar = ({ socket, username }) => {
      </div>
     </div>
     <div className="pt-5 p-3 text-white text-sm flex items-center gap-2">
-     <div className="p-2 bg-white rounded w-10 h-10 flex items-center justify-center">
+     <div className="p-2 bg-white rounded w-9 h-9 flex items-center justify-center">
       <BsFillPersonFill className="text-blue-500 text-xl" />
      </div>
      <div>
@@ -19,12 +50,7 @@ export const UserSidebar = ({ socket, username }) => {
      </div>
     </div>
     <div className="p-3 text-center absolute bottom-0 left-0 right-0">
-     <button
-      // onClick={handleDisconnect}
-      className="bg-red-600 text-white text-xs px-4 w-[100px] h-8 rounded"
-     >
-      Delete room
-     </button>
+     {renderActionButton()}
     </div>
    </div>
   </>
