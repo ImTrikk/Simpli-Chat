@@ -23,14 +23,9 @@ io.on("connection", (socket) => {
  // listener for creating chat rooms
  socket.on("create_room", (data, username) => {
   socket.join(data);
-  console.log("username", username);
-  console.log("data", data);
   existingRooms.set(data, 1);
   existingUsers.set(username, 1);
-  console.log(`UserID: ${socket.id} room: ${data}`);
   socket.to(data).emit("user_joined", username);
-  // existingRooms.add(data);
-  console.log("Room after creatin a room: ", existingRooms);
  });
 
  socket.on("join_room", (room, user, callback) => {
@@ -38,11 +33,7 @@ io.on("connection", (socket) => {
    socket.join(room);
    socket.to(room).emit("user_joined", user);
    existingUsers.set(user, 1);
-   console.log("users update: ", existingUsers);
    existingRooms.set(room, existingRooms.get(room) + 1);
-   console.log("user_joined: ", user);
-   console.log(`User joined room: ${room}`);
-   console.log("Chech map", existingRooms);
    callback(true);
   } else {
    if (typeof callback === "function") {
@@ -52,7 +43,6 @@ io.on("connection", (socket) => {
  });
 
  socket.on("all_usernames", () => {
-  console.log("Test all users");
   const usernames = Array.from(existingUsers.keys());
   socket.emit("all_usernames", usernames);
  });
