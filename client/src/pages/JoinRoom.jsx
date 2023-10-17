@@ -32,6 +32,7 @@ function JoinRoom() {
      });
     } else {
      setError(null);
+     socket.emit("all_usernames");
      toast.success(`Joined the room: ${room}`, {
       position: "top-right",
       autoClose: 2000,

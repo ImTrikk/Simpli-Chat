@@ -14,12 +14,19 @@ export const LoggedUser = ({ socket, room, username }) => {
    setListUser((users) => users.filter((user) => user !== leftUser));
   };
 
+  const handleCurrentUsers = (users) => {
+   setListUser(users);
+  };
+
   socket.on("user_joined", handleUserJoined);
   socket.on("user_left", handleUserLeft);
-
+  socket.on("current_users", handleCurrentUsers);
+  socket.on("all_usernames", handleCurrentUsers);
   return () => {
    socket.off("user_joined", handleUserJoined);
    socket.off("user_left", handleUserLeft);
+   socket.off("current_users", handleCurrentUsers);
+   socket.off("all_usernames", handleCurrentUsers);
   };
  }, [socket]);
  return (

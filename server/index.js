@@ -17,6 +17,7 @@ const io = new Server(server, {
 
 // stores all existing rooms
 const existingRooms = new Map();
+const existingUsers = new Map();
 
 io.on("connection", (socket) => {
  // listener for creating chat rooms
@@ -25,6 +26,7 @@ io.on("connection", (socket) => {
   console.log("username", username);
   console.log("data", data);
   existingRooms.set(data, 1);
+  existingUsers.set(username, 1);
   console.log(`UserID: ${socket.id} room: ${data}`);
   socket.to(data).emit("user_joined", username);
   // existingRooms.add(data);
@@ -35,15 +37,24 @@ io.on("connection", (socket) => {
   if (existingRooms.has(room)) {
    socket.join(room);
    socket.to(room).emit("user_joined", user);
+   existingUsers.set(user, 1);
+   console.log("users update: ", existingUsers);
    existingRooms.set(room, existingRooms.get(room) + 1);
    console.log("user_joined: ", user);
    console.log(`User joined room: ${room}`);
+   console.log("Chech map", existingRooms);
    callback(true);
   } else {
    if (typeof callback === "function") {
     callback(false);
    }
   }
+ });
+
+ socket.on("all_usernames", () => {
+  console.log("Test all users")
+  const usernames = Array.from(existingUsers.keys());
+  socket.emit("all_usernames", usernames);
  });
 
  socket.on("create_message", (data) => {
