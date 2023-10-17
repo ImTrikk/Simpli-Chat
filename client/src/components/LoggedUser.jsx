@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { FaUsers } from "react-icons/fa";
 import { BsFillPersonFill } from "react-icons/bs";
 
-export const LoggedUser = ({ socket, username }) => {
+export const LoggedUser = ({ socket, room, username }) => {
  const [listUser, setListUser] = useState([]);
 
  useEffect(() => {

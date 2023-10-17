@@ -150,7 +150,7 @@ function Chatbox({ socket, username, room }) {
      </div>
     </div>
     <div className="border-l border-r border-b rounded-r h-[500px]">
-     <LoggedUser socket={socket} username={username} />
+     <LoggedUser socket={socket} room={room} username={username} />
     </div>
    </div>
   </div>
