@@ -58,7 +58,7 @@ io.on("connection", (socket) => {
    )}`;
    messageData.image = imageBase64; // Replace binary data with data URL
   }
-  console.log("message messageData: ", messageData);
+  // console.log("message messageData: ", messageData);
   socket.to(messageData.room).emit("message_received", messageData);
  });
 
@@ -84,7 +84,7 @@ io.on("connection", (socket) => {
   const count = existingUsers.size;
   if (count == 0) {
    existingUsers.clear();
-   existingRooms.clear(room);
+   existingRooms.clear();
    console.log("Deleted users on disconnections", existingUsers);
   }
  });

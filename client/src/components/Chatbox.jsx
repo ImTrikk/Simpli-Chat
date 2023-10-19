@@ -5,12 +5,14 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { LoggedUser } from "./LoggedUser";
 import { UserSidebar } from "./UserSidebar";
+import { MdAddAPhoto } from "react-icons/md";
 
 function Chatbox({ socket, username, room }) {
  const [message, setMessage] = useState("");
  const [userMessageList, setUserMessageList] = useState([]);
  const [joinedUserMessages, setJoinedUserMessage] = useState("");
  const [image, setImage] = useState("");
+ const [selectedImg, setSelelectedImg] = useState("");
 
  const sendMessage = async () => {
   if (message !== "" || image !== "") {
@@ -85,9 +87,11 @@ function Chatbox({ socket, username, room }) {
     </div>
     <div className="bg-gray-100 border-t border-b md:w-[500px] h-[500px] relative">
      <div className="p-4 border-b border-gray-300 h-[50px] flex items-center">
-      <h1 className="text-gray-500 text-sm font-medium">
-       <span className="font-bold">#{room}</span>
-      </h1>
+      <div className="p-2 bg-blue-400 rounded flex items-center justify-center">
+       <h1 className="text-white text-sm font-medium">
+        <span className="font-bold">#{room}</span>
+       </h1>
+      </div>
       <div className="ml-32 text-xs text-gray-500">{joinedUserMessages}</div>
      </div>
      <div className="w-full bg-gray-100 p-3 h-auto">
@@ -120,11 +124,13 @@ function Chatbox({ socket, username, room }) {
             </p>
            </div>
            {message.image && (
-            <img
-             src={message.image}
-             alt="Image"
-             className="w-[300px] h-[200px]"
-            />
+            <div className="bg-white p-1 rounded">
+             <img
+              src={message.image}
+              alt="Image"
+              className="w-[300px] h-[200px] rounded"
+             />
+            </div>
            )}
            <div className="flex text-sm" id="time">
             <p>{message.message}</p>
@@ -149,12 +155,19 @@ function Chatbox({ socket, username, room }) {
         className="w-full outline-blue-200 text-xs px-2 h-8 border border-gray-300 rounded"
        />
        <div className="flex items-center gap-2">
-        <input
-         type="file"
-         accept="image/*"
-         onChange={handleImageChange}
-         className="text-xs"
-        />
+        <label htmlFor="fileInput" className="cursor-pointer">
+         <div className="border border-blue-500 rounded flex items-center justify-center h-8 p-2">
+          <MdAddAPhoto size={22} className="text-blue-500" />
+          <input
+           type="file"
+           accept="image/*"
+           onChange={handleImageChange}
+           id="fileInput"
+           style={{ display: "none" }}
+          />
+         </div>
+        </label>
+        {selectedImg && <div>{selectedImg}</div>}
         <button
          onClick={sendMessage}
          className="bg-blue-500 text-xs text-white px-5 rounded h-8"
