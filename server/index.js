@@ -24,14 +24,10 @@ const existingUsers = new Map();
 io.on("connection", (socket) => {
  // listener for creating chat rooms
  socket.on("create_room", (data, username) => {
-  if (existingUsers.has(username)) {
-   console.log("USER ALREADY EXIST");
-  } else {
-   socket.join(data);
-   existingRooms.set(data, 1);
-   existingUsers.set(username, 1);
-   socket.to(data).emit("user_joined", username);
-  }
+  socket.join(data);
+  existingRooms.set(data, 1);
+  existingUsers.set(username, 1);
+  socket.to(data).emit("user_joined", username);
  });
 
  socket.on("join_room", (room, user, callback) => {
@@ -42,7 +38,7 @@ io.on("connection", (socket) => {
    existingRooms.set(room, existingRooms.get(room) + 1);
    callback(true);
   } else {
-   console.log("Existing user!!!")
+   console.log("Existing user!!!");
    if (typeof callback === "function") {
     callback(false);
    }
@@ -54,9 +50,16 @@ io.on("connection", (socket) => {
   socket.emit("all_usernames", usernames);
  });
 
- socket.on("create_message", (data) => {
-  console.log("message data: ", data);
-  socket.to(data.room).emit("message_received", data);
+ socket.on("create_message", (messageData) => {
+  if (messageData.image instanceof Buffer) {
+   // Convert the binary image data to a base64 data URL
+   const imageBase64 = `data:image/jpeg;base64,${messageData.image.toString(
+    "base64",
+   )}`;
+   messageData.image = imageBase64; // Replace binary data with data URL
+  }
+  console.log("message messageData: ", messageData);
+  socket.to(messageData.room).emit("message_received", messageData);
  });
 
  socket.on("user_left", (data) => {

@@ -10,19 +10,38 @@ function Chatbox({ socket, username, room }) {
  const [message, setMessage] = useState("");
  const [userMessageList, setUserMessageList] = useState([]);
  const [joinedUserMessages, setJoinedUserMessage] = useState("");
+ const [image, setImage] = useState("");
 
  const sendMessage = async () => {
-  if (message !== "") {
+  if (message !== "" || image !== "") {
    const messageData = {
     time:
      new Date(Date.now()).getHours() + ":" + new Date(Date.now()).getMinutes(),
     message: message,
     username: username,
     room: room,
+    image: image,
    };
    await socket.emit("create_message", messageData);
    setUserMessageList((list) => [...list, messageData]);
    setMessage("");
+   setImage("");
+  }
+ };
+
+ // convert the selected file into a data URL and set
+ //it as the value of the image state variable.This allows you to display
+ // the selected image in your component, and potentially, to send it to the
+ // server or perform other operations with it.
+
+ const handleImageChange = (e) => {
+  if (e.target.files && e.target.files.length > 0) {
+   const file = e.target.files[0];
+   const reader = new FileReader();
+   reader.onload = (e) => {
+    setImage(e.target.result); // Set the image as a data URL
+   };
+   reader.readAsDataURL(file);
   }
  };
 
@@ -32,7 +51,6 @@ function Chatbox({ socket, username, room }) {
   };
 
   socket.on("message_received", sendMessage);
-
   socket.on("user_joined", (user) => {
    setJoinedUserMessage(`---${user} joined the chat---`);
    toast.info(`${user} has joined the chat room`, {
@@ -101,6 +119,13 @@ function Chatbox({ socket, username, room }) {
              {username === message.username ? "You" : message.username}
             </p>
            </div>
+           {message.image && (
+            <img
+             src={message.image}
+             alt="Image"
+             className="w-[300px] h-[200px]"
+            />
+           )}
            <div className="flex text-sm" id="time">
             <p>{message.message}</p>
            </div>
@@ -124,6 +149,12 @@ function Chatbox({ socket, username, room }) {
         className="w-full outline-blue-200 text-xs px-2 h-8 border border-gray-300 rounded"
        />
        <div className="flex items-center gap-2">
+        <input
+         type="file"
+         accept="image/*"
+         onChange={handleImageChange}
+         className="text-xs"
+        />
         <button
          onClick={sendMessage}
          className="bg-blue-500 text-xs text-white px-5 rounded h-8"
