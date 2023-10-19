@@ -11,7 +11,6 @@ function Chatbox({ socket, username, room }) {
  const [userMessageList, setUserMessageList] = useState([]);
  const [joinedUserMessages, setJoinedUserMessage] = useState("");
 
- // modify the user messages id to get the different names
  const sendMessage = async () => {
   if (message !== "") {
    const messageData = {
@@ -51,20 +50,6 @@ function Chatbox({ socket, username, room }) {
     setJoinedUserMessage("");
    }, 3000);
   });
-
-  // // handling user when leaving the room
-  // socket.on("user_left", (user) => {
-  //  toast.info(`${user} has left the chat room`, {
-  //   position: "top-center",
-  //   autoClose: 2000,
-  //   hideProgressBar: false,
-  //   closeOnClick: true,
-  //   pauseOnHover: true,
-  //   draggable: true,
-  //   progress: undefined,
-  //   theme: "light",
-  //  });
-  // });
 
   return () => {
    socket.off("message_received", sendMessage);

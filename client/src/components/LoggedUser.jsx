@@ -5,6 +5,8 @@ import { BsFillPersonFill } from "react-icons/bs";
 export const LoggedUser = ({ socket, room, username }) => {
  const [listUser, setListUser] = useState([username]);
 
+ // !improve username rendering of the  socket room
+ // !dapat kadtu rang naka connect sa socket and ma render an room
  useEffect(() => {
   const handleUserJoined = (user) => {
    setListUser((users) => [...users, user]);

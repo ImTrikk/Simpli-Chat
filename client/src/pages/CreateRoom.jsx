@@ -8,21 +8,20 @@ import "react-toastify/dist/ReactToastify.css";
 import socket from "../../socket/socket";
 
 // const socket = io.connect("http://localhost:3001");
+// const socket = io.connect("https://simpli-chat-server.vercel.app/");
 
 const CreateRoom = () => {
  const [userName, setUsername] = useState("");
  const [room, setRoom] = useState("");
  const [chatbox, renderChatbox] = useState(false);
- const [disconnect, setDisconnect] = useState(false);
- // const socket = io.connect("https://simpli-chat-server.vercel.app/");
 
  const socketHelper = socket;
 
- const createRoom = ({ data }) => {
+ const createRoom = async({ data }) => {
   if (userName !== "" && room !== "") {
    socketHelper.emit("create_room", room, userName);
    toast.success(`Room created: ${room}`, {
-    position: "top-right",
+    position: "top-center",
     autoClose: 1000,
     hideProgressBar: false,
     closeOnClick: true,

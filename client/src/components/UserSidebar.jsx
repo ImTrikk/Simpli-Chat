@@ -6,14 +6,26 @@ import "react-toastify/dist/ReactToastify.css";
 
 export const UserSidebar = ({ socket, username, room }) => {
  const navHome = useNavigate();
- const handleDisconnect = () => {
+ const handleDisconnect = async() => {
   socket.emit("user_left", { room, username });
-  // Handling user when leaving the room
+
+  toast.info(`Leaving room`, {
+   position: "top-center",
+   autoClose: 2000,
+   hideProgressBar: false,
+   closeOnClick: true,
+   pauseOnHover: true,
+   draggable: true,
+   progress: undefined,
+   theme: "light",
+  });
+
   setTimeout(() => {
    navHome("/");
   }, 3000);
+
   return () => {
-   socket.off("user_left"); // Remove the event listener when the component unmounts
+   socket.off("user_left");
   };
  };
 

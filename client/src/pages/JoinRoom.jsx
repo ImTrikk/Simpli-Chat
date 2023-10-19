@@ -7,7 +7,9 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import socket from "../../socket/socket";
 
+// const socket = io.connect("https://simpli-chat-server.vercel.app/");
 // const socket = io.connect("http://localhost:3001");
+const socketHelper = socket;
 
 function JoinRoom() {
  const [userName, setUsername] = useState("");
@@ -15,17 +17,14 @@ function JoinRoom() {
  const [chatbox, setChatbox] = useState(false);
  const [error, setError] = useState(false);
 
- // const socket = io.connect("https://simpli-chat-server.vercel.app/");
-
- const socketHelper = socket;
- const joinRoom = () => {
+ const joinRoom = async () => {
   if (userName !== "" && room !== "") {
    // Send a request to join the room
-  socketHelper.emit("join_room", room, userName, (roomExist) => {
+   socketHelper.emit("join_room", room, userName, (roomExist) => {
     if (!roomExist) {
      setError("Room does not exist!");
      toast.error(`Room: ${room} does not exist`, {
-      position: "top-right",
+      position: "top-center",
       autoClose: 2000,
       hideProgressBar: false,
       closeOnClick: true,
@@ -36,9 +35,9 @@ function JoinRoom() {
      });
     } else {
      setError(null);
-    socketHelper.emit("all_usernames");
+     socketHelper.emit("all_usernames");
      toast.success(`Joined the room: ${room}`, {
-      position: "top-right",
+      position: "top-center",
       autoClose: 2000,
       hideProgressBar: false,
       closeOnClick: true,
@@ -92,17 +91,19 @@ function JoinRoom() {
        </div>
       )}
       <div>
-       {error && (
-        <div className="text-red-500">
-         <p>{error}</p>
-        </div>
-       )}
        {chatbox ? (
         <Chatbox socket={socket} username={userName} room={room} />
        ) : (
         ""
        )}
       </div>
+     </div>
+     <div className="flex justify-center pt-10">
+      {error && (
+       <div className="text-red-500">
+        <p>{error}</p>
+       </div>
+      )}
      </div>
     </div>
    </div>

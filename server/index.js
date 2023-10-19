@@ -17,25 +17,32 @@ const io = new Server(server, {
 
 // stores all existing rooms
 const existingRooms = new Map();
+
+// !render usernames only on the same socket
 const existingUsers = new Map();
 
 io.on("connection", (socket) => {
  // listener for creating chat rooms
  socket.on("create_room", (data, username) => {
-  socket.join(data);
-  existingRooms.set(data, 1);
-  existingUsers.set(username, 1);
-  socket.to(data).emit("user_joined", username);
+  if (existingUsers.has(username)) {
+   console.log("USER ALREADY EXIST");
+  } else {
+   socket.join(data);
+   existingRooms.set(data, 1);
+   existingUsers.set(username, 1);
+   socket.to(data).emit("user_joined", username);
+  }
  });
 
  socket.on("join_room", (room, user, callback) => {
-  if (existingRooms.has(room)) {
+  if (existingRooms.has(room) && !existingUsers.has(user)) {
    socket.join(room);
    socket.to(room).emit("user_joined", user);
    existingUsers.set(user, 1);
    existingRooms.set(room, existingRooms.get(room) + 1);
    callback(true);
   } else {
+   console.log("Existing user!!!")
    if (typeof callback === "function") {
     callback(false);
    }
@@ -57,20 +64,26 @@ io.on("connection", (socket) => {
   socket.leave(room);
   socket.to(room).emit("user_left", username);
   existingUsers.delete(username);
-  const userCount = existingRooms.get(room);
+  let userCount = existingUsers.size;
+  console.log("User count: ", userCount);
   if (userCount > 0) {
    existingRooms.set(room, userCount - 1); // Decrement user count
-   if (userCount === 0) {
-    // If no more users, delete the room
-    existingRooms.clear(data);
-   }
+  }
+  if (userCount == 0) {
+   existingRooms.delete(room); // Remove the room from the Map
+   console.log("Room after deletion: ", existingRooms);
   }
  });
 
  // listen when the client disconnects from the socket
  socket.on("disconnect", (room) => {
   console.log("User disconnect");
-  existingUsers.clear();
+  const count = existingUsers.size;
+  if (count == 0) {
+   existingUsers.clear();
+   existingRooms.clear(room);
+   console.log("Deleted users on disconnections", existingUsers);
+  }
  });
 
  socket.on("delete_room", (data) => {
