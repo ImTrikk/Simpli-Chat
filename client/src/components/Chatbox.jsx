@@ -28,6 +28,7 @@ function Chatbox({ socket, username, room }) {
    setUserMessageList((list) => [...list, messageData]);
    setMessage("");
    setImage("");
+   setSelelectedImg("");
   }
  };
 
@@ -39,12 +40,18 @@ function Chatbox({ socket, username, room }) {
  const handleImageChange = (e) => {
   if (e.target.files && e.target.files.length > 0) {
    const file = e.target.files[0];
+   setSelelectedImg(file.name);
    const reader = new FileReader();
    reader.onload = (e) => {
     setImage(e.target.result); // Set the image as a data URL
    };
    reader.readAsDataURL(file);
   }
+ };
+
+ const handleRemoveFile = () => {
+  setImage("");
+  setSelelectedImg("");
  };
 
  useEffect(() => {
@@ -81,7 +88,7 @@ function Chatbox({ socket, username, room }) {
  return (
   <div>
    <ToastContainer autoClose={2000} />
-   <div className="lg:flex items-start pt-10">
+   <div className="lg:flex items-start pt-20">
     <div className="rounded-l h-[500px]">
      <UserSidebar socket={socket} username={username} room={room} />
     </div>
@@ -143,6 +150,18 @@ function Chatbox({ socket, username, room }) {
         </div>
        ))}
       </ScrollToBottom>
+      <div className="absolute bottom-12 left-0 right-0 p-3">
+       {selectedImg && (
+        <div className=" border border-gray-300 rounded flex items-center justify-between p-3">
+         <div className="text-xs text-gray-500">
+          Attached image: {selectedImg}
+         </div>
+         <button onClick={handleRemoveFile} className="text-xs text-red-400">
+          X
+         </button>
+        </div>
+       )}
+      </div>
       <div className="flex justify-end gap-2 p-3 absolute bottom-0 left-0 right-0">
        <input
         type="text"
@@ -167,7 +186,6 @@ function Chatbox({ socket, username, room }) {
           />
          </div>
         </label>
-        {selectedImg && <div>{selectedImg}</div>}
         <button
          onClick={sendMessage}
          className="bg-blue-500 text-xs text-white px-5 rounded h-8"

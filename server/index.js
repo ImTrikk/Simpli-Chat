@@ -22,12 +22,18 @@ const existingRooms = new Map();
 const existingUsers = new Map();
 
 io.on("connection", (socket) => {
- // listener for creating chat rooms
+
+ // !fix bug multiple room
  socket.on("create_room", (data, username) => {
-  socket.join(data);
-  existingRooms.set(data, 1);
-  existingUsers.set(username, 1);
-  socket.to(data).emit("user_joined", username);
+  if (existingRooms.has(data)) {
+   console.log("Room already exist");
+  socket.emit("create_room", data)
+  } else {
+   socket.join(data);
+   existingRooms.set(data, 1);
+   existingUsers.set(username, 1);
+   socket.to(data).emit("user_joined", username);
+  }
  });
 
  socket.on("join_room", (room, user, callback) => {
@@ -82,11 +88,12 @@ io.on("connection", (socket) => {
  socket.on("disconnect", (room) => {
   console.log("User disconnect");
   const count = existingUsers.size;
-  if (count == 0) {
+  if (count === 0) {
    existingUsers.clear();
    existingRooms.clear();
-   console.log("Deleted users on disconnections", existingUsers);
+   console.log("Deleted users and room");
   }
+  // socket.off();
  });
 
  socket.on("delete_room", (data) => {

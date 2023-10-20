@@ -17,9 +17,10 @@ const CreateRoom = () => {
 
  const socketHelper = socket;
 
- const createRoom = async({ data }) => {
+ const createRoom = async ({ data }) => {
   if (userName !== "" && room !== "") {
    socketHelper.emit("create_room", room, userName);
+   //! fix the error in here it must check the passed error from the backen
    toast.success(`Room created: ${room}`, {
     position: "top-center",
     autoClose: 1000,
