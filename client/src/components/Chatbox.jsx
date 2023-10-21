@@ -15,7 +15,8 @@ function Chatbox({ socket, username, room }) {
   const [image, setImage] = useState("");
   const [selectedImg, setSelelectedImg] = useState("");
 
-  const sendMessage = async () => {
+  const sendMessage = async (e) => {
+    e.preventDefault()
     try {
       if (message !== "" || image !== "") {
         const messageData = {
@@ -98,6 +99,8 @@ function Chatbox({ socket, username, room }) {
       console.log(err);
     }
   }, [socket]);
+
+  // socket.emit("disconnect", username);
 
   return (
     <div>

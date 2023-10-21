@@ -109,17 +109,10 @@ io.on("connection", (socket) => {
     }
   });
 
-  socket.on("disconnect", (room) => {
+  socket.on("disconnect", () => {
     console.log("User disconnect from socket");
-    usersInRoom.clear();
-    existingRooms.clear();
-    console.log("Removed Rooms");
-    // const count = usersInRoom.size;
-    // if (count === 0) {
-    //   usersInRoom.clear();
-    //   existingRooms.clear();
-    //   console.log("Deleted users and room");
-    // }
+    console.log("Existing rooms: ", existingRooms);
+    console.log("Existing users: ", usersInRoom);
   });
 });
 

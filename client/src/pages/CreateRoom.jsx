@@ -94,7 +94,7 @@ const CreateRoom = () => {
               </div>
             )}
             {chatbox ? (
-              <Chatbox socket={socket} username={userName} room={room} />
+              <Chatbox socket={socketHelper} username={userName} room={room} />
             ) : (
               ""
             )}
