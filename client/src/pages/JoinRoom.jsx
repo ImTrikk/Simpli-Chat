@@ -55,7 +55,6 @@ function JoinRoom() {
   return (
     <>
       <div>
-        <Navbar />
         <ToastContainer autoClose={1000} />
         <div className="mx-10 md:mx-20">
           <div className="md:flex items-center justify-center">

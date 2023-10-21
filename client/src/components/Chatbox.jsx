@@ -15,6 +15,7 @@ function Chatbox({ socket, username, room }) {
   const [joinedUserMessages, setJoinedUserMessage] = useState("");
   const [image, setImage] = useState("");
   const [selectedImg, setSelelectedImg] = useState("");
+  const [fileSize, setFileSize] = useState("");
 
   const sendMessage = async () => {
     try {
@@ -45,21 +46,55 @@ function Chatbox({ socket, username, room }) {
   // the selected image in your component, and potentially, to send it to the
   // server or perform other operations with it.
 
+  // const handleImageChange = (e) => {
+  //   try {
+  //     if (e.target.files && e.target.files.length > 0) {
+  //       const file = e.target.files[0];
+  //       setSelelectedImg(file.name);
+  //       const reader = new FileReader();
+  //       reader.onload = (e) => {
+  //         setImage(e.target.result); // Set the image as a data URL
+  //       };
+  //       reader.readAsDataURL(file);
+  //     }
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // };
+
   const handleImageChange = (e) => {
-    try {
-      if (e.target.files && e.target.files.length > 0) {
-        const file = e.target.files[0];
-        setSelelectedImg(file.name);
+    const file = e.target.files[0];
+    if (file) {
+      if (file.size > 1048576) {
+        //bytes = 1mb
+        setImage("");
+        setSelelectedImg("");
+        toast.error("File is too large select another image, 1mb maximum", {
+          position: "top-center",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      } else {
         const reader = new FileReader();
+        reader.readAsDataURL(file);
+        setSelelectedImg(file.name);
         reader.onload = (e) => {
           setImage(e.target.result); // Set the image as a data URL
         };
-        reader.readAsDataURL(file);
       }
-    } catch (err) {
-      console.log(err);
     }
   };
+
+  // const handleImageChange = (e) => {
+  //   setImage(e.target.files[0].name);
+  //   setFile(e.target.files[0]);
+  //   setSelelectedImg(image);
+  // };
 
   const handleRemoveFile = () => {
     setImage("");
@@ -164,7 +199,7 @@ function Chatbox({ socket, username, room }) {
                             <img
                               src={message.image}
                               alt="Image"
-                              className="w-[300px] h-[200px] rounded"
+                              className="w-[300px] h-auto rounded"
                             />
                           </div>
                         )}

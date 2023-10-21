@@ -75,19 +75,20 @@ io.on("connection", (socket) => {
 
   socket.on("create_message", (messageData) => {
     try {
-      if (messageData.image instanceof Buffer) {
-        // Determine the MIME type of the image
-        const imageMime = "image/jpeg"; // Replace with your default MIME type
-        if (messageData.imageType === "png") {
-          imageMime = "image/png";
-        }
+      // if (messageData.image instanceof Buffer) {
+      //   // Determine the MIME type of the image
+      //   const imageMime = "image/jpeg"; // Replace with your default MIME type
+      //   if (messageData.imageType === "png") {
+      //     imageMime = "image/png";
+      //   }
 
-        // Convert the binary image data to a base64 data URL
-        const imageBase64 = `data:${imageMime};base64,${messageData.image.toString(
-          "base64",
-        )}`;
-        messageData.image = imageBase64; // Replace binary data with data URL
-      }
+      //   // Convert the binary image data to a base64 data URL
+      //   const imageBase64 = `data:${imageMime};base64,${messageData.image.toString(
+      //     "base64",
+      //   )}`;
+      //   messageData.image = imageBase64; // Replace binary data with data URL
+      // }
+
       // Emit the message data to the room
       socket.to(messageData.room).emit("create_message", messageData);
     } catch (err) {
@@ -120,7 +121,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on("disconnect", () => {
-    console.log("Disconnected")
+    console.log("Disconnected");
   });
 
   // // Listener for when the user refreshes the page and leaves the chatbox
