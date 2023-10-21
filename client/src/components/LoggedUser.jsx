@@ -37,8 +37,8 @@ export const LoggedUser = ({ socket, room, username }) => {
         <div className="bg-blue-500 flex items-center justify-between rounded-tr h-[50px] w-[250px]">
           <div className="p-3 w-full flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <FaUsers className="text-white text-2xl" />{" "}
-              <span className="text-white">|</span>
+              <FaUsers className="text-white text-2xl" />
+              <span className="text-white text-xs">| Users in room</span>
             </div>
             <p className="text-2xl font-bold text-white">{listUser.length}</p>
           </div>
