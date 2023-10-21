@@ -1,11 +1,14 @@
 import React from "react";
 import { Navbar } from "../components/Navbar";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 // import io from "socket.io-client";
 import Chatbox from "../components/Chatbox";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import socket from "../../socket/socket";
+import LoadingBar from "react-top-loading-bar";
+import { BsArrowRight } from "react-icons/bs";
 
 // const socket = io.connect("http://localhost:3001");
 // const socket = io.connect("https://simpli-chat-server.vercel.app/");
@@ -14,6 +17,7 @@ const CreateRoom = () => {
   const [userName, setUsername] = useState("");
   const [room, setRoom] = useState("");
   const [chatbox, renderChatbox] = useState(false);
+  const loadingBar = useRef(null);
 
   const socketHelper = socket;
 
@@ -52,12 +56,35 @@ const CreateRoom = () => {
     };
   };
 
-  
+  const navJoin = useNavigate();
+
+  const joinRoom = () => {
+    loadingBar.current.continuousStart(60);
+    setTimeout(() => {
+      loadingBar.current.complete();
+      setTimeout(() => {
+        navJoin("/join-room");
+      }, 1200);
+    }, 1000);
+  };
+  const navJMenu = useNavigate();
+
+  const mainMenu = () => {
+    loadingBar.current.continuousStart(60);
+    setTimeout(() => {
+      loadingBar.current.complete();
+      setTimeout(() => {
+        navJoin("/");
+      }, 1200);
+    }, 1000);
+  };
 
   return (
     <>
       <div>
         <ToastContainer autoClose={1000} />
+        <LoadingBar color="#0043DC" ref={loadingBar} />
+
         <div className="mx-10 md:mx-20">
           <div className="flex items-center justify-center">
             {chatbox ? (
@@ -83,13 +110,28 @@ const CreateRoom = () => {
                     onChange={(e) => setRoom(e.target.value)}
                     className=" w-full border border-blue-500 text-xs h-10 px-4 rounded outline-none"
                   />
-                  <div className="flex justify-end">
+                  <div className="flex justify-between items-center">
                     <button
-                      onClick={createRoom}
-                      className=" bg-blue-500 text-sm font-semibold h-10 px-2 rounded text-white"
+                      onClick={mainMenu}
+                      className="text-xs text-gray-400 flex items-center gap-1 hover:text-gray-500"
                     >
-                      Create room
+                      Main menu
+                      <BsArrowRight />
                     </button>
+                    <div className="flex gap-2 justify-end">
+                      <button
+                        onClick={joinRoom}
+                        className="border border-blue-500 rounded px-2 text-blue-500"
+                      >
+                        Join room
+                      </button>
+                      <button
+                        onClick={createRoom}
+                        className=" bg-blue-500 text-sm font-semibold h-10 px-2 rounded text-white"
+                      >
+                        Create room
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>

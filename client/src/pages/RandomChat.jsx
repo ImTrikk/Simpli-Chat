@@ -4,7 +4,6 @@ function RandomChat() {
  return (
   <>
    <div>
-    <Navbar />
     <div className="mx-20">
      <div className="flex items-center justify-center h-screen">
       <h1>Random Chatting</h1>

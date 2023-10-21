@@ -69,7 +69,7 @@ function Chatbox({ socket, username, room }) {
         //bytes = 1mb
         setImage("");
         setSelelectedImg("");
-        toast.error("File is too large select another image, 1mb maximum", {
+        toast.error("File is too large select another image, 1mb maximum ", {
           position: "top-center",
           autoClose: 2000,
           hideProgressBar: false,
