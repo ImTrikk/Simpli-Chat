@@ -7,6 +7,7 @@ import { LoggedUser } from "./LoggedUser";
 import { UserSidebar } from "./UserSidebar";
 import { MdAddAPhoto } from "react-icons/md";
 import { BsPersonCircle } from "react-icons/bs";
+import { MdCancel } from "react-icons/md";
 
 function Chatbox({ socket, username, room }) {
   const [message, setMessage] = useState("");
@@ -15,8 +16,7 @@ function Chatbox({ socket, username, room }) {
   const [image, setImage] = useState("");
   const [selectedImg, setSelelectedImg] = useState("");
 
-  const sendMessage = async (e) => {
-    e.preventDefault()
+  const sendMessage = async () => {
     try {
       if (message !== "" || image !== "") {
         const messageData = {
@@ -99,9 +99,6 @@ function Chatbox({ socket, username, room }) {
       console.log(err);
     }
   }, [socket]);
-
-  // socket.emit("disconnect", username);
-
   return (
     <div>
       <ToastContainer autoClose={2000} />
@@ -199,7 +196,7 @@ function Chatbox({ socket, username, room }) {
                     onClick={handleRemoveFile}
                     className="text-xs text-red-400"
                   >
-                    X
+                    <MdCancel size={22} />
                   </button>
                 </div>
               )}

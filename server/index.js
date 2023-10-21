@@ -76,30 +76,40 @@ io.on("connection", (socket) => {
   socket.on("create_message", (messageData) => {
     try {
       if (messageData.image instanceof Buffer) {
+        // Determine the MIME type of the image
+        const imageMime = "image/jpeg"; // Replace with your default MIME type
+        if (messageData.imageType === "png") {
+          imageMime = "image/png";
+        }
+
         // Convert the binary image data to a base64 data URL
-        const imageBase64 = `data:image/jpeg;base64,${messageData.image.toString(
+        const imageBase64 = `data:${imageMime};base64,${messageData.image.toString(
           "base64",
         )}`;
         messageData.image = imageBase64; // Replace binary data with data URL
       }
-      // console.log("message messageData: ", messageData);
+      // Emit the message data to the room
       socket.to(messageData.room).emit("create_message", messageData);
     } catch (err) {
-      console.log("Image error: ", err);
+      console.error("Image error:", err);
+      // Handle the error (e.g., send an error message to the sender)
     }
   });
 
   socket.on("user_left", (data) => {
     try {
       const { room, username } = data;
-      socket.leave(room);
-      socket.to(room).emit("user_left", username, room);
       // remove the user from the map
       if (usersInRoom.has(room)) {
         const usersInThisRoom = usersInRoom.get(room);
         for (let i = 0; i < usersInThisRoom.length; i++) {
           if (usersInThisRoom[i] == username) {
             usersInThisRoom.splice(i, 1);
+            socket.leave(room);
+            if (usersInRoom.get(room).length === 0) {
+              existingRooms.delete(room);
+            }
+            socket.to(room).emit("user_left", username);
             break;
           }
         }
@@ -110,10 +120,41 @@ io.on("connection", (socket) => {
   });
 
   socket.on("disconnect", () => {
-    console.log("User disconnect from socket");
-    console.log("Existing rooms: ", existingRooms);
-    console.log("Existing users: ", usersInRoom);
+    console.log("Disconnected")
   });
+
+  // // Listener for when the user refreshes the page and leaves the chatbox
+  // socket.on("user_leaving", (data) => {
+  //   const { room, username } = data;
+  //   if (usersInRoom.has(room)) {
+  //     const usernamesInRoom = usersInRoom.get(room);
+  //     if (usernamesInRoom.includes(username)) {
+  //       console.log("Data being sent: ", data);
+  //       socket.to(room).emit("user_left", username);
+  //     }
+  //   }
+  // });
+
+  // socket.on("disconnect", () => {
+  //   // Iterate through the rooms to check if the disconnected user was in any room
+  //   usersInRoom.forEach((username, room) => {
+  //     const data = { username, room };
+  //     console.log("The username disconnected: ", username);
+  //     if (username.includes(socket.username)) {
+  //       const username = socket.username; // Use the correct identifier for the username
+  //       socket.to(room).emit("user_left", data);
+
+  //       console.log("User disconnected from socket: ", socket.username);
+
+  //       // Remove the user from the room
+  //       const userIndex = username.indexOf(socket.username);
+  //       if (userIndex !== -1) {
+  //         username.splice(userIndex, 1);
+  //       }
+  //     }
+  //   });
+  //   // ...
+  // });
 });
 
 server.listen(3001, () => {
