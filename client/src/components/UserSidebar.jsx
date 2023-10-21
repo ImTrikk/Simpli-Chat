@@ -23,10 +23,6 @@ export const UserSidebar = ({ socket, username, room }) => {
   setTimeout(() => {
    navHome("/");
   }, 3000);
-
-  return () => {
-   socket.off("user_left");
-  };
  };
 
  useEffect(() => {
@@ -69,7 +65,7 @@ export const UserSidebar = ({ socket, username, room }) => {
     <div className="p-3 text-center absolute bottom-0 left-0 right-0">
      <button
       onClick={handleDisconnect}
-      className="bg-blue-600 text-white text-xs px-4 w-[100px] h-8 rounded"
+      className="bg-red-500 text-white text-xs px-4 w-[100px] h-8 rounded"
      >
       Disconnect
      </button>
