@@ -32,7 +32,7 @@ export const UserSidebar = ({ socket, username, room }) => {
 
   useEffect(() => {
     socket.on("user_left", (data) => {
-      toast.info(`User: ${data} has left the room`, {
+      toast.info(`${data} has left the room`, {
         position: "top-center",
         autoClose: 2000,
         hideProgressBar: false,

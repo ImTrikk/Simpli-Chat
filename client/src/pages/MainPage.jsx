@@ -41,9 +41,9 @@ const MainPage = () => {
             </div>
             <div>
               <img
-                src="public/images/main.jpg"
+                src="/images/main.jpg"
                 alt=""
-                className="w-full md:w-[800px] h-auto"
+                className="w-full md:w-[900px] h-auto"
               />
             </div>
           </div>

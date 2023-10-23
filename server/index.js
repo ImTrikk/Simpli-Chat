@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const http = require("http");
 const { Server } = require("socket.io");
+const { callbackify } = require("util");
 
 const app = express();
 app.use(cors());
@@ -18,6 +19,10 @@ const io = new Server(server, {
 // stores all existing rooms
 const existingRooms = new Map();
 const usersInRoom = new Map();
+
+// variables for the random chatting
+const availableUsers = [];
+const randomRoom = new Set();
 
 io.on("connection", (socket) => {
   console.log("user connected ");
@@ -44,16 +49,24 @@ io.on("connection", (socket) => {
 
   socket.on("join_room", (room, user, callback) => {
     try {
-      if (existingRooms.has(room) && !usersInRoom.get(room).includes(user)) {
-        socket.join(room);
-        socket.to(room).emit("user_joined", user);
-        usersInRoom.get(room).push(user);
-        // existingRooms.set(room, existingRooms.get(room) + 1);
-        callback(true);
+      if (existingRooms.has(room)) {
+        if (!usersInRoom.has(user)) {
+          socket.join(room);
+          socket.to(room).emit("user_joined", user);
+          usersInRoom.get(room).push(user);
+          // existingRooms.set(room, existingRooms.get(room) + 1);
+          if (typeof callback === "function") {
+            callback(true);
+          }
+        } else {
+          if (typeof callback === "function") {
+            callback(false, "User already exist");
+          }
+        }
       } else {
         console.log("Existing user!!!");
         if (typeof callback === "function") {
-          callback(false);
+          callback(false, "User already exist");
         }
       }
     } catch (err) {
@@ -61,7 +74,6 @@ io.on("connection", (socket) => {
     }
   });
 
-  // modify the code here, it should only return all the usernames if it connects with the existing room
   socket.on("all_usernames", (room) => {
     try {
       if (usersInRoom.has(room)) {
@@ -75,25 +87,10 @@ io.on("connection", (socket) => {
 
   socket.on("create_message", (messageData) => {
     try {
-      // if (messageData.image instanceof Buffer) {
-      //   // Determine the MIME type of the image
-      //   const imageMime = "image/jpeg"; // Replace with your default MIME type
-      //   if (messageData.imageType === "png") {
-      //     imageMime = "image/png";
-      //   }
-
-      //   // Convert the binary image data to a base64 data URL
-      //   const imageBase64 = `data:${imageMime};base64,${messageData.image.toString(
-      //     "base64",
-      //   )}`;
-      //   messageData.image = imageBase64; // Replace binary data with data URL
-      // }
-
       // Emit the message data to the room
       socket.to(messageData.room).emit("create_message", messageData);
     } catch (err) {
       console.error("Image error:", err);
-      // Handle the error (e.g., send an error message to the sender)
     }
   });
 
@@ -124,38 +121,42 @@ io.on("connection", (socket) => {
     console.log("Disconnected");
   });
 
-  // // Listener for when the user refreshes the page and leaves the chatbox
-  // socket.on("user_leaving", (data) => {
-  //   const { room, username } = data;
-  //   if (usersInRoom.has(room)) {
-  //     const usernamesInRoom = usersInRoom.get(room);
-  //     if (usernamesInRoom.includes(username)) {
-  //       console.log("Data being sent: ", data);
-  //       socket.to(room).emit("user_left", username);
-  //     }
-  //   }
-  // });
+  // backend code for the random chattings//
 
-  // socket.on("disconnect", () => {
-  //   // Iterate through the rooms to check if the disconnected user was in any room
-  //   usersInRoom.forEach((username, room) => {
-  //     const data = { username, room };
-  //     console.log("The username disconnected: ", username);
-  //     if (username.includes(socket.username)) {
-  //       const username = socket.username; // Use the correct identifier for the username
-  //       socket.to(room).emit("user_left", data);
+  availableUsers.push(socket);
 
-  //       console.log("User disconnected from socket: ", socket.username);
+  socket.on("join_random", (roomName) => {
+    console.log("random test");
+    socket.join(roomName);
+    randomRoom.add(roomName);
+  });
 
-  //       // Remove the user from the room
-  //       const userIndex = username.indexOf(socket.username);
-  //       if (userIndex !== -1) {
-  //         username.splice(userIndex, 1);
-  //       }
-  //     }
-  //   });
-  //   // ...
-  // });
+  socket.on("random_chat", () => {
+    if (availableUsers.length >= 0) {
+      const user1 = socket.pop();
+      const user2 = socket.pop();
+
+      const randomizedRom = generateUniqueRoomName();
+
+      user1.join(room);
+      user2.join(room);
+      randomRoom.add(randomizedRom);
+
+      user1.emit("match_found", roomName);
+      user2.emit("match_found", roomName);
+    }
+  });
+
+  socket.on("random_maessage", (room, message) => {
+    socket.to(room).emit("random_message", message);
+  });
+
+  socket.on("disconnect", () => {
+    const index = availableUsers.indexOf(socket);
+    if (index !== -1) {
+      availableUsers.splice(index, 1);
+    }
+  });
 });
 
 server.listen(3001, () => {
