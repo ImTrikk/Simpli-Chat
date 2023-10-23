@@ -14,15 +14,16 @@ function RandomChat() {
  const [username, setUsername] = useState("");
  const [showError, setShowError] = useState(false);
  const [error, setError] = useState("");
+ const [room, setRoom] = useState("");
 
  const handleRandomChat = async () => {
   socket.emit("random_connect", username);
  };
 
  useEffect(() => {
-  socket.on("random_user_joined", (username, roomName, callback) => {
-   console.log(username);
+  socket.on("random_user_joined", (roomName, callback) => {
    if (callback) {
+    setRoom(roomName);
     setChatbox(true);
    }
   });
@@ -52,7 +53,7 @@ function RandomChat() {
         ""
        )}
        {chatbox ? (
-        <RandomChatbox username={username} />
+        <RandomChatbox username={username} room={room} />
        ) : (
         <div>
          <div className="flex gap-2 items-center text-center pt-5">

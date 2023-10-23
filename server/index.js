@@ -144,30 +144,28 @@ io.on("connection", (socket) => {
    userSocket1.join(roomName);
    userSocket2.join(roomName);
 
-   userSocket1
-    .to(roomName)
-    .emit("random_user_joined", username, roomName, (callback) => {
-     if (typeof callback == "function") {
-      callback(true);
-     }
-    });
-   userSocket2
-    .to(roomName)
-    .emit("random_user_joined", username, roomName, (callback) => {
-     if (typeof callback == "function") {
-      callback(true);
-     }
-    });
+   userSocket1.to(roomName).emit("random_user_joined", roomName, (callback) => {
+    if (typeof callback == "function") {
+     callback(true);
+    }
+   });
+   userSocket2.to(roomName).emit("random_user_joined", roomName, (callback) => {
+    if (typeof callback == "function") {
+     callback(true);
+    }
+   });
 
    console.log("success join room");
 
    // Reset the RandomUsers array for the next round of matching
-   RandomUsers.length = 0;
+   RandomUsers.clear();
+   console.log("Random user size after deletion: ", RandomUsers.size);
   }
  });
 
  socket.on("random_message", (messageData) => {
-  socket.to(messageData.room).emit("create_message", messageData);
+  console.log("Recieved Message: ", messageData);
+  socket.to(messageData.room).emit("random_message", messageData);
  });
 
  socket.on("disconnect", () => {
