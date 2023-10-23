@@ -15,7 +15,18 @@ function RandomChat() {
  const [showError, setShowError] = useState(false);
  const [error, setError] = useState("");
 
- const handleRandomChat = async () => {};
+ const handleRandomChat = async () => {
+  socket.emit("random_connect", username);
+ };
+
+ useEffect(() => {
+  socket.on("random_user_joined", (username, roomName, callback) => {
+   console.log(username);
+   if (callback) {
+    setChatbox(true);
+   }
+  });
+ }, [socket]);
 
  const navMenu = useNavigate();
  const handleNavMenu = () => {

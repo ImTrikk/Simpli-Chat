@@ -19,6 +19,8 @@ const io = new Server(server, {
 // stores all existing rooms
 const existingRooms = new Map();
 const usersInRoom = new Map();
+const RandomUsers = new Map();
+const RandomUserUser = new Map();
 
 io.on("connection", (socket) => {
  console.log("user connected ");
@@ -115,22 +117,49 @@ io.on("connection", (socket) => {
 
  //start the random chat here
 
- const RandomUsers = [];
+ function generateUniqueRoomName() {
+  return Math.random().toString(36).substring(2, 10);
+ }
 
- socket.on("random_connect", () => {
-  RandomUsers.push(socket.id);
+ socket.on("random_connect", (username) => {
+  RandomUsers.set(socket.id, 1);
   console.log("Random users: ", RandomUsers);
+  console.log("test length: ", RandomUsers.size);
 
-  if (RandomUsers.length === 2) {
+  if (RandomUsers.size === 2) {
    // Two users are available, create a chat room name
    const roomName = generateUniqueRoomName();
+   console.log("Room name generated: ", roomName);
 
-   // Notify both users about the match and the room name
-   RandomUsers.forEach((userId) => {
-    const userSocket = io.sockets.sockets[userId];
-    userSocket.emit("match_found", roomName);
-    userSocket.join(roomName);
-   });  
+   // Get the keys (socket IDs) from the map
+   const socketIds = [...RandomUsers.keys()];
+
+   //  Get the socket instances using the socket IDs
+   const userSocket1 = io.sockets.sockets.get(socketIds[0]);
+   const userSocket2 = io.sockets.sockets.get(socketIds[1]);
+
+   console.log(userSocket1);
+   console.log(userSocket2);
+
+   userSocket1.join(roomName);
+   userSocket2.join(roomName);
+
+   userSocket1
+    .to(roomName)
+    .emit("random_user_joined", username, roomName, (callback) => {
+     if (typeof callback == "function") {
+      callback(true);
+     }
+    });
+   userSocket2
+    .to(roomName)
+    .emit("random_user_joined", username, roomName, (callback) => {
+     if (typeof callback == "function") {
+      callback(true);
+     }
+    });
+
+   console.log("success join room");
 
    // Reset the RandomUsers array for the next round of matching
    RandomUsers.length = 0;
