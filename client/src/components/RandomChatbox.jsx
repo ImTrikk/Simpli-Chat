@@ -4,8 +4,8 @@ import ScrollToBottom from "react-scroll-to-bottom";
 function RandomChatbox() {
   return (
     <div>
-      <ScrollToBottom className="scroll-bar">
-        <div className="bg-white rounded w-[500px] h-[400px] relative">
+      <ScrollToBottom className="scroll-bar pt-5">
+        <div className="bg-white rounded w-[500px] h-[500px] relative">
           <div className="flex items-center gap-2 absolute bottom-0 right-0 left-0 p-4 ">
             <input
               type="text"
