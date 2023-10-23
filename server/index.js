@@ -123,9 +123,8 @@ io.on("connection", (socket) => {
 
   // backend code for the random chattings//
 
-  availableUsers.push(socket);
-
   socket.on("join_random", (roomName) => {
+    availableUsers.push(socket);
     console.log("random test");
     socket.join(roomName);
     randomRoom.add(roomName);
