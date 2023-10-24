@@ -17,7 +17,9 @@ function RandomChat() {
  const [room, setRoom] = useState("");
 
  const handleRandomChat = async () => {
-  socket.emit("random_connect", username);
+  if (username !== "") {
+   socket.emit("random_connect", username);
+  }
  };
 
  useEffect(() => {
@@ -37,7 +39,11 @@ function RandomChat() {
     setChatbox(true);
    }
   });
- }, [socket]);
+
+  return () => {
+   socket.off("random_user_joined");
+  };
+ });
 
  const navMenu = useNavigate();
  const handleNavMenu = () => {

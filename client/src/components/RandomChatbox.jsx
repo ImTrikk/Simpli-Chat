@@ -45,24 +45,7 @@ function RandomChatbox({ username, room }) {
 
   socket.on("random_message", handleReceivedMessage);
 
-  return () => {
-   socket.off("random_message", handleReceivedMessage);
-  };
- }, []);
-
- const navigate = useNavigate();
-
- const handleDisconnect = () => {
-  console.log("room: ", room);
-  socket.emit("random_user_disconnect", { room, username });
-  setTimeout(() => {
-   navigate("/");
-  }, 3000);
- };
-
- socket.on(
-  "random_user_disconnect",
-  (username) => {
+  socket.on("random_user_disconnect", (username) => {
    toast.info(`${username} has left, ending room in 3 seconds`, {
     position: "top-center",
     autoClose: 3000,
@@ -73,13 +56,37 @@ function RandomChatbox({ username, room }) {
     progress: undefined,
     theme: "light",
    });
+   setTimeout(() => {
+    navigate("/");
+   }, 3000);
+  });
 
-   return () => {
-    socket.off("random_user_disconnect", username);
-   };
-  },
-  [socket],
- );
+  return () => {
+   socket.off("random_message", handleReceivedMessage);
+   socket.off("random_user_disconnect");
+  };
+ });
+
+ const navigate = useNavigate();
+
+ const handleDisconnect = () => {
+  console.log("room: ", room);
+  socket.emit("random_user_disconnect", { room, username });
+  toast.info(`leaving random chatting`, {
+   position: "top-center",
+   autoClose: 3000,
+   hideProgressBar: false,
+   closeOnClick: true,
+   pauseOnHover: true,
+   draggable: true,
+   progress: undefined,
+   theme: "light",
+  });
+
+  setTimeout(() => {
+   navigate("/");
+  }, 3000);
+ };
 
  return (
   <div>
