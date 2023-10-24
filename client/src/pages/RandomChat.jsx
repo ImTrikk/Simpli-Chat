@@ -23,6 +23,16 @@ function RandomChat() {
  useEffect(() => {
   socket.on("random_user_joined", (roomName, callback) => {
    if (callback) {
+    toast.success("Found a match!", {
+     position: "top-center",
+     autoClose: 2000,
+     hideProgressBar: false,
+     closeOnClick: true,
+     pauseOnHover: true,
+     draggable: true,
+     progress: undefined,
+     theme: "light",
+    });
     setRoom(roomName);
     setChatbox(true);
    }

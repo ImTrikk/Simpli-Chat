@@ -2,6 +2,9 @@ import React, { useEffect, useState } from "react";
 import ScrollToBottom from "react-scroll-to-bottom";
 import socket from "../../socket/socket.js";
 import { BsPersonCircle } from "react-icons/bs";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useNavigate } from "react-router-dom";
 
 function RandomChatbox({ username, room }) {
  const [message, setMessage] = useState("");
@@ -18,40 +21,90 @@ function RandomChatbox({ username, room }) {
     time:
      new Date(Date.now()).getHours() + ":" + new Date(Date.now()).getMinutes(),
    };
-
-   console.log("Message to be sent: ", messageData);
-
    await socket.emit("random_message", messageData);
    setMessageList((list) => [...list, messageData]);
    setMessage("");
   } else {
+   toast.error("Message field empty, enter a message", {
+    position: "top-center",
+    autoClose: 2000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "light",
+   });
   }
  };
 
  useEffect(() => {
-  socket.on("random_message", (messageData) => {
+  const handleReceivedMessage = (messageData) => {
    setMessageList((list) => [...list, messageData]);
-  });
+  };
+
+  socket.on("random_message", handleReceivedMessage);
 
   return () => {
-   socket.off("random_message", handleSendMessage);
+   socket.off("random_message", handleReceivedMessage);
   };
- }, [socket]);
+ }, []);
+
+ const navigate = useNavigate();
+
+ const handleDisconnect = () => {
+  console.log("room: ", room);
+  socket.emit("random_user_disconnect", { room, username });
+  setTimeout(() => {
+   navigate("/");
+  }, 3000);
+ };
+
+ socket.on(
+  "random_user_disconnect",
+  (username) => {
+   toast.info(`${username} has left, ending room in 3 seconds`, {
+    position: "top-center",
+    autoClose: 3000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "light",
+   });
+
+   return () => {
+    socket.off("random_user_disconnect", username);
+   };
+  },
+  [socket],
+ );
 
  return (
   <div>
-   <div className="bg-white rounded w-[500px] h-[500px] relative ">
-    <div className="bg-gray-700 p-2 rounded">
+   <ToastContainer autoClose={2000} />
+   <div className="bg-white rounded w-[500px] h-[550px] relative ">
+    <div
+     className="bg-gray-700 p-4 rounded flex items-center justify-between
+    "
+    >
      <h1 className="text-white">Chatting as {username}</h1>
+     <button
+      onClick={handleDisconnect}
+      className="bg-red-500 text-white rounded px-2 h-10"
+     >
+      Disconnect
+     </button>
     </div>
-    <ScrollToBottom className="scroll-bar pt-5">
+    <ScrollToBottom className="scroll-bar pt-5 h-[420px]">
      {messageList.map((message, index) => (
       <div
        className={` ${
         username === message.username ? "flex justify-end" : "flex"
        }`}
        id={username}
-       key={index}
+       key={message.timestamp}
       >
        <div className="p-2">
         <div className="flex gap-2">
@@ -63,7 +116,7 @@ function RandomChatbox({ username, room }) {
          <div
           className={`${
            username === message.username
-            ? "bg-blue-500 text-white px-3 py-2 rounded-t-lg rounded-bl-xl max-w-[300px]"
+            ? "bg-blue-500  text-white px-3 py-2 rounded-t-lg rounded-bl-xl max-w-[300px]"
             : "bg-gray-200 text-gray-500 px-3 py-2  rounded-t-xl rounded-br-xl max-w-[300px]"
           }`}
          >

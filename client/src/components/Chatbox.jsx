@@ -125,7 +125,7 @@ function Chatbox({ socket, username, room }) {
       <ScrollToBottom className="scroll-bar h-[380px]">
        {userMessageList.map((message, index) => (
         <div
-         className={` ${
+         className={`   ${
           username === message.username ? "flex justify-end" : "flex"
          }`}
          id={username}

@@ -157,7 +157,7 @@ io.on("connection", (socket) => {
 
    console.log("success join room");
 
-   // Reset the RandomUsers array for the next round of matching
+   // Reset the RandomUsers array for other users to be paired
    RandomUsers.clear();
    console.log("Random user size after deletion: ", RandomUsers.size);
   }
@@ -166,6 +166,13 @@ io.on("connection", (socket) => {
  socket.on("random_message", (messageData) => {
   console.log("Recieved Message: ", messageData);
   socket.to(messageData.room).emit("random_message", messageData);
+ });
+
+ // socket disconnection of random user
+ socket.on("random_user_disconnect", (data) => {
+  console.log("Test random user disconnect");
+  console.log("Room checker: ", data.room);
+  socket.to(data.room).emit("random_user_disconnect", data.username);
  });
 
  socket.on("disconnect", () => {
