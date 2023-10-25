@@ -25,7 +25,7 @@ function JoinRoom() {
  const joinRoom = async () => {
   if (userName !== "" && room !== "") {
    // Send a request to join the room
-   socketHelper.emit("join_room", room, userName, (roomExist, message) => {
+   socket.emit("join_room", room, userName, (roomExist, message) => {
     console.log(roomExist);
     console.log(message);
     if (!roomExist) {
