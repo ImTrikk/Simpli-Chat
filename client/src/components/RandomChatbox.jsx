@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import ScrollToBottom from "react-scroll-to-bottom";
 import socket from "../../socket/socket.js";
 import { BsPersonCircle } from "react-icons/bs";
-import { MdCancel } from "react-icons/md";
 import { MdAddAPhoto } from "react-icons/md";
+import { MdCancel } from "react-icons/md";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
@@ -17,7 +17,7 @@ function RandomChatbox({ username, room }) {
  const [errorShow, setErrorShow] = useState(null);
 
  const handleSendMessage = async () => {
-  if (message !== "") {
+  if (message !== "" || image !== "") {
    const messageData = {
     image: image,
     room: room,
@@ -181,6 +181,15 @@ function RandomChatbox({ username, room }) {
           <div className="flex text-sm" id="time">
            <p>{message.message}</p>
           </div>
+          {message.image && (
+           <div className="bg-white p-1 rounded">
+            <img
+             src={message.image}
+             alt="Image"
+             className="w-[300px] h-auto rounded"
+            />
+           </div>
+          )}
          </div>
          <div
           className={` ${username === message.username ? "mt-auto" : "hidden"}`}
@@ -210,24 +219,36 @@ function RandomChatbox({ username, room }) {
      )}
     </div>
     <div className="flex items-center gap-2 absolute bottom-0 right-0 left-0 p-4 ">
-     <label htmlFor="fileInput" className="cursor-pointer">
-      <div className="border border-blue-500 rounded flex items-center justify-center h-8 p-2">
-       <MdAddAPhoto size={22} className="text-blue-500" />
-       <input
-        type="file"
-        accept="image/*"
-        onChange={handleImageChange}
-        id="fileInput"
-        style={{ display: "none" }}
-       />
-      </div>
-     </label> 
-     <button
-      onClick={handleSendMessage}
-      className="bg-blue-500 rounded h-10 px-4 text-sm text-white"
-     >
-      send
-     </button>
+     <input
+      type="text"
+      value={message}
+      onChange={(e) => setMessage(e.target.value)}
+      onKeyDown={(event) => {
+       event.key === "Enter" && handleSendMessage();
+      }}
+      placeholder="type a message..."
+      className="w-full text-gray-500 text-xs h-10 outline-none px-2 border border-blue-500 rounded"
+     />
+     <div className="flex items-center gap-2">
+      <label htmlFor="fileInput" className="cursor-pointer">
+       <div className="border border-blue-500 rounded flex items-center justify-center h-8 p-2">
+        <MdAddAPhoto size={22} className="text-blue-500" />
+        <input
+         type="file"
+         accept="image/*"
+         onChange={handleImageChange}
+         id="fileInput"
+         style={{ display: "none" }}
+        />
+       </div>
+      </label>
+      <button
+       onClick={handleSendMessage}
+       className="bg-blue-500 text-xs text-white px-5 rounded h-8"
+      >
+       send
+      </button>
+     </div>
     </div>
    </div>
   </div>
