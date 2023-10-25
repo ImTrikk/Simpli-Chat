@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from "react";
 import ScrollToBottom from "react-scroll-to-bottom";
-import socket from "../../socket/socket.js";
 import { BsPersonCircle } from "react-icons/bs";
 import { MdAddAPhoto } from "react-icons/md";
 import { MdCancel } from "react-icons/md";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
+
+import { io } from "socket.io-client";
+
+const socket = io.connection("https://simpli-chat-server.vercel.app/");
 
 function RandomChatbox({ username, room }) {
  const [message, setMessage] = useState("");
