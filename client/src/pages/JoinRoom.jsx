@@ -8,10 +8,11 @@ import { useNavigate } from "react-router-dom";
 import LoadingBar from "react-top-loading-bar";
 import { BsArrowRight } from "react-icons/bs";
 import { MdCall } from "react-icons/md";
+import { io } from "socket.io-client";
 
-// const socket = io.connect("https://simpli-chat-server.vercel.app/");
+const socket = io.connect("https://simpli-chat-server.vercel.app/");
 // const socket = io.connect("http://localhost:3001");
-const socketHelper = socket;
+
 
 function JoinRoom() {
  const [userName, setUsername] = useState("");
@@ -24,7 +25,7 @@ function JoinRoom() {
  const joinRoom = async () => {
   if (userName !== "" && room !== "") {
    // Send a request to join the room
-   socketHelper.emit("join_room", room, userName, (roomExist, message) => {
+   socket.emit("join_room", room, userName, (roomExist, message) => {
     console.log(roomExist);
     console.log(message);
     if (!roomExist) {
@@ -161,7 +162,7 @@ function JoinRoom() {
       )}
       <div>
        {chatbox ? (
-        <Chatbox socket={socketHelper} username={userName} room={room} />
+        <Chatbox socket={socket} username={userName} room={room} />
        ) : (
         ""
        )}
