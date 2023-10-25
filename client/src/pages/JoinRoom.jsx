@@ -10,7 +10,7 @@ import { BsArrowRight } from "react-icons/bs";
 import { MdCall } from "react-icons/md";
 import io from "socket.io-client";
 
-const socket = io.connect("https://simpli-chat-server.vercel.app/");
+const socket = io.connect("http://simpli-chat-server.vercel.app");
 // const socket = io.connect("http://localhost:3001");
 //const socketHelper = socket;
 
