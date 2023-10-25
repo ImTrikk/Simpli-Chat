@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import Chatbox from "../components/Chatbox";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-i//mport socket from "../../socket/socket";
+//mport socket from "../../socket/socket";
 import LoadingBar from "react-top-loading-bar";
 import { BsArrowRight } from "react-icons/bs";
 import io from "socket.io-client";
