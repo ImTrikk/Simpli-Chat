@@ -13,7 +13,6 @@ import { io } from "socket.io-client";
 const socket = io.connect("https://simpli-chat-server.vercel.app/");
 // const socket = io.connect("http://localhost:3001");
 
-
 function JoinRoom() {
  const [userName, setUsername] = useState("");
  const [room, setRoom] = useState("");
