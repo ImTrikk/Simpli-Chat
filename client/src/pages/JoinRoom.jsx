@@ -8,19 +8,11 @@ import { useNavigate } from "react-router-dom";
 import LoadingBar from "react-top-loading-bar";
 import { BsArrowRight } from "react-icons/bs";
 import { MdCall } from "react-icons/md";
-<<<<<<< HEAD
 import { io } from "socket.io-client";
 
 const socket = io.connect("https://simpli-chat-server.vercel.app/");
 // const socket = io.connect("http://localhost:3001");
 
-=======
-import io from "socket.io-client";
-
-const socket = io.connect("https://simpli-chat-server.vercel.app");
-// const socket = io.connect("http://localhost:3001");
-//const socketHelper = socket;
->>>>>>> 5e42addbc5b47a5c3eeeeed442f00bc2b9c16bfc
 
 function JoinRoom() {
  const [userName, setUsername] = useState("");
