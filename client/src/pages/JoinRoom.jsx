@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import LoadingBar from "react-top-loading-bar";
 import { BsArrowRight } from "react-icons/bs";
 import { MdCall } from "react-icons/md";
+import io from "socket.io-client";
 
 const socket = io.connect("https://simpli-chat-server.vercel.app/");
 // const socket = io.connect("http://localhost:3001");
