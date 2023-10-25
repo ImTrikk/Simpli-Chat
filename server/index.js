@@ -45,26 +45,25 @@ io.on("connection", (socket) => {
   }
  });
 
+ // !
  socket.on("join_room", (room, user, callback) => {
   try {
-   if (existingRooms.has(room)) {
-    if (!usersInRoom.has(user)) {
+   if (!existingRooms.has(room)) {
+    if (typeof callback === "function") {
+     callback(false, "Room does not exist");
+    }
+   } else {
+    if (!usersInRoom.get(room).includes(user)) {
      socket.join(room);
      socket.to(room).emit("user_joined", user);
      usersInRoom.get(room).push(user);
-     // existingRooms.set(room, existingRooms.get(room) + 1);
      if (typeof callback === "function") {
-      callback(true);
+      callback(true, "Room join");
      }
     } else {
      if (typeof callback === "function") {
-      callback(false, "User already exist");
+      callback(false, "User already exists in the room");
      }
-    }
-   } else {
-    console.log("Existing user!!!");
-    if (typeof callback === "function") {
-     callback(false, "User already exist");
     }
    }
   } catch (err) {

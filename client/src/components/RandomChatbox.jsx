@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import ScrollToBottom from "react-scroll-to-bottom";
 import socket from "../../socket/socket.js";
 import { BsPersonCircle } from "react-icons/bs";
+import { MdCancel } from "react-icons/md";
+import { MdAddAPhoto } from "react-icons/md";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
@@ -9,12 +11,15 @@ import { useNavigate } from "react-router-dom";
 function RandomChatbox({ username, room }) {
  const [message, setMessage] = useState("");
  const [messageList, setMessageList] = useState([]);
+ const [image, setImage] = useState("");
+ const [selectedImg, setSelelectedImg] = useState("");
  const [error, setError] = useState("");
  const [errorShow, setErrorShow] = useState(null);
 
  const handleSendMessage = async () => {
   if (message !== "") {
    const messageData = {
+    image: image,
     room: room,
     message: message,
     username: username,
@@ -24,6 +29,8 @@ function RandomChatbox({ username, room }) {
    await socket.emit("random_message", messageData);
    setMessageList((list) => [...list, messageData]);
    setMessage("");
+   setImage("");
+   setSelelectedImg("");
   } else {
    toast.error("Message field empty, enter a message", {
     position: "top-center",
@@ -36,6 +43,39 @@ function RandomChatbox({ username, room }) {
     theme: "light",
    });
   }
+ };
+
+ const handleImageChange = (e) => {
+  const file = e.target.files[0];
+  if (file) {
+   if (file.size > 1048576) {
+    //bytes = 1mb
+    setImage("");
+    setSelelectedImg("");
+    toast.error("File is too large select another image, 1mb maximum ", {
+     position: "top-center",
+     autoClose: 2000,
+     hideProgressBar: false,
+     closeOnClick: true,
+     pauseOnHover: true,
+     draggable: true,
+     progress: undefined,
+     theme: "light",
+    });
+   } else {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    setSelelectedImg(file.name);
+    reader.onload = (e) => {
+     setImage(e.target.result); // Set the image as a data URL
+    };
+   }
+  }
+ };
+
+ const handleRemoveFile = () => {
+  setImage("");
+  setSelelectedImg("");
  };
 
  useEffect(() => {
@@ -157,17 +197,31 @@ function RandomChatbox({ username, room }) {
       </div>
      ))}
     </ScrollToBottom>
+    <div className="absolute bottom-10 left-0 right-0 p-3">
+     {selectedImg && (
+      <div className=" border border-blue-300 rounded flex items-center justify-between p-3">
+       <div className="text-xs text-blue-500">
+        Attached image: {selectedImg}
+       </div>
+       <button onClick={handleRemoveFile} className="text-xs text-red-400">
+        <MdCancel size={22} />
+       </button>
+      </div>
+     )}
+    </div>
     <div className="flex items-center gap-2 absolute bottom-0 right-0 left-0 p-4 ">
-     <input
-      type="text"
-      value={message}
-      onChange={(e) => setMessage(e.target.value)}
-      onKeyDown={(event) => {
-       event.key === "Enter" && handleSendMessage();
-      }}
-      placeholder="type a message..."
-      className="w-full text-gray-500 text-xs h-10 outline-none px-2 border border-blue-500 rounded"
-     />
+     <label htmlFor="fileInput" className="cursor-pointer">
+      <div className="border border-blue-500 rounded flex items-center justify-center h-8 p-2">
+       <MdAddAPhoto size={22} className="text-blue-500" />
+       <input
+        type="file"
+        accept="image/*"
+        onChange={handleImageChange}
+        id="fileInput"
+        style={{ display: "none" }}
+       />
+      </div>
+     </label> 
      <button
       onClick={handleSendMessage}
       className="bg-blue-500 rounded h-10 px-4 text-sm text-white"

@@ -7,6 +7,7 @@ import socket from "../../socket/socket";
 import { useNavigate } from "react-router-dom";
 import LoadingBar from "react-top-loading-bar";
 import { BsArrowRight } from "react-icons/bs";
+import { MdCall } from "react-icons/md";
 
 // const socket = io.connect("https://simpli-chat-server.vercel.app/");
 // const socket = io.connect("http://localhost:3001");
@@ -19,14 +20,16 @@ function JoinRoom() {
  const [error, setError] = useState(false);
  const loadingBar = useRef(null);
 
+ // !
  const joinRoom = async () => {
   if (userName !== "" && room !== "") {
    // Send a request to join the room
-   socketHelper.emit("join_room", room, userName, (roomExist, errorMessage) => {
+   socketHelper.emit("join_room", room, userName, (roomExist, message) => {
+    console.log(roomExist);
+    console.log(message);
     if (!roomExist) {
-     if (errorMessage === "User already exist") {
-      setError("User already exist!");
-      toast.error(`User already exist`, {
+     if (message === "User already exists in the room") {
+      toast.error(`User already exists in the room`, {
        position: "top-center",
        autoClose: 2000,
        hideProgressBar: false,
@@ -37,7 +40,6 @@ function JoinRoom() {
        theme: "light",
       });
      } else {
-      setError("Room does not exist!");
       toast.error(`Room: ${room} does not exist`, {
        position: "top-center",
        autoClose: 2000,
@@ -50,19 +52,30 @@ function JoinRoom() {
       });
      }
     } else {
-     setError(null);
-     // socketHelper.emit("all_usernames");
-     toast.success(`Joined the room: ${room}`, {
-      position: "top-center",
-      autoClose: 2000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-     });
-     setChatbox(true);
+     if (message === "User already exists in the room") {
+      toast.error(`User aleady exist`, {
+       position: "top-center",
+       autoClose: 2000,
+       hideProgressBar: false,
+       closeOnClick: true,
+       pauseOnHover: true,
+       draggable: true,
+       progress: undefined,
+       theme: "light",
+      });
+     } else {
+      setChatbox(true);
+      toast.success(`Joined room: ${room}`, {
+       position: "top-center",
+       autoClose: 2000,
+       hideProgressBar: false,
+       closeOnClick: true,
+       pauseOnHover: true,
+       draggable: true,
+       progress: undefined,
+       theme: "light",
+      });
+     }
     }
    });
   }

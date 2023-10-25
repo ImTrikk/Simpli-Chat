@@ -15,7 +15,6 @@ function Chatbox({ socket, username, room }) {
  const [joinedUserMessages, setJoinedUserMessage] = useState("");
  const [image, setImage] = useState("");
  const [selectedImg, setSelelectedImg] = useState("");
- const [fileSize, setFileSize] = useState("");
 
  const sendMessage = async () => {
   try {
