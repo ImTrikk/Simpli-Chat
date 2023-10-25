@@ -3,15 +3,15 @@ import { useState, useRef } from "react";
 import Chatbox from "../components/Chatbox";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import socket from "../../socket/socket";
+//import socket from "../../socket/socket";
 import { useNavigate } from "react-router-dom";
 import LoadingBar from "react-top-loading-bar";
 import { BsArrowRight } from "react-icons/bs";
 import { MdCall } from "react-icons/md";
 
-// const socket = io.connect("https://simpli-chat-server.vercel.app/");
+const socket = io.connect("https://simpli-chat-server.vercel.app/");
 // const socket = io.connect("http://localhost:3001");
-const socketHelper = socket;
+//const socketHelper = socket;
 
 function JoinRoom() {
  const [userName, setUsername] = useState("");
