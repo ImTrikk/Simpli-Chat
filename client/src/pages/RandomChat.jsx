@@ -4,10 +4,14 @@ import { Navbar } from "../components/Navbar";
 import RandomChatbox from "../components/RandomChatbox";
 import Chatbox from "../components/Chatbox";
 import { BsHandIndex } from "react-icons/bs";
-import socket from "../../socket/socket.js";
+//import socket from "../../socket/socket.js";
 import { BsArrowRight } from "react-icons/bs";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+
+import io from "socket.io-client";
+
+const socket = io.connect("https://simpli-chat-server.vercel.app");
 
 function RandomChat() {
  const [chatbox, setChatbox] = useState(false);
