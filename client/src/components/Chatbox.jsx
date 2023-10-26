@@ -107,11 +107,11 @@ function Chatbox({ socket, username, room }) {
  return (
   <div>
    <ToastContainer autoClose={2000} />
-   <div className="lg:flex items-start pt-20">
-    <div className="rounded-l h-[500px]">
+   <div className="lg:flex items-start pt-10">
+    <div className="rounded-l h-[600px]">
      <UserSidebar socket={socket} username={username} room={room} />
     </div>
-    <div className="bg-gray-100 border-t border-b md:w-[500px] h-[500px] relative">
+    <div className="bg-gray-100 border-t border-b md:w-[700px] h-[600px] relative">
      <div className="p-4 border-b border-gray-300 h-[50px] flex items-center">
       <div className="p-2 bg-blue-400 rounded flex items-center justify-center">
        <h1 className="text-white text-sm font-medium">
@@ -233,7 +233,7 @@ function Chatbox({ socket, username, room }) {
       </div>
      </div>
     </div>
-    <div className="border-l border-r border-b rounded-r h-[500px]">
+    <div className="border-l border-r border-b rounded-r h-[600px]">
      <LoggedUser socket={socket} room={room} username={username} />
     </div>
    </div>
