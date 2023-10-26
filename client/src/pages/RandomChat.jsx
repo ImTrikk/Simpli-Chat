@@ -11,7 +11,8 @@ import "react-toastify/dist/ReactToastify.css";
 
 import io from "socket.io-client";
 
-const socket = io.connect("https://simpli-chat-server.vercel.app");
+// const socket = io.connect("https://simpli-chat-server.vercel.app");
+const socket = io.connect("http://localhost:3001");
 
 function RandomChat() {
  const [chatbox, setChatbox] = useState(false);
@@ -73,7 +74,7 @@ function RandomChat() {
         ""
        )}
        {chatbox ? (
-        <RandomChatbox username={username} room={room} />
+        <RandomChatbox socket={socket} username={username} room={room} />
        ) : (
         <div>
          <div className="flex gap-2 items-center text-center pt-5">

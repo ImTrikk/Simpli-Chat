@@ -136,9 +136,6 @@ io.on("connection", (socket) => {
    const userSocket1 = io.sockets.sockets.get(socketIds[0]);
    const userSocket2 = io.sockets.sockets.get(socketIds[1]);
 
-   console.log(userSocket1);
-   console.log(userSocket2);
-
    userSocket1.join(roomName);
    userSocket2.join(roomName);
 
@@ -153,8 +150,6 @@ io.on("connection", (socket) => {
     }
    });
 
-   console.log("success join room");
-
    // Reset the RandomUsers array for other users to be paired
    RandomUsers.clear();
    console.log("Random user size after deletion: ", RandomUsers.size);
@@ -163,6 +158,7 @@ io.on("connection", (socket) => {
 
  socket.on("random_message", (messageData) => {
   console.log("Recieved Message: ", messageData);
+  console.log("This is the room route:", messageData.room);
   socket.to(messageData.room).emit("random_message", messageData);
  });
 

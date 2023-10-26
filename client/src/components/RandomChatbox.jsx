@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import ScrollToBottom from "react-scroll-to-bottom";
-import { BsPersonCircle } from "react-icons/bs";
+import { BsPersonCircle, BsXLg } from "react-icons/bs";
 import { MdAddAPhoto } from "react-icons/md";
 import { MdCancel } from "react-icons/md";
 import { ToastContainer, toast } from "react-toastify";
@@ -9,10 +9,11 @@ import { useNavigate } from "react-router-dom";
 
 import { io } from "socket.io-client";
 
-const socket = io.connection("https://simpli-chat-server.vercel.app/");
+// const socket = io.connection("https://simpli-chat-server.vercel.app/");
+
 // const socket = io.connect("http://localhost:3001");
 
-function RandomChatbox({ username, room }) {
+function RandomChatbox({ socket, username, room }) {
  const [message, setMessage] = useState("");
  const [messageList, setMessageList] = useState([]);
  const [image, setImage] = useState("");
@@ -155,7 +156,8 @@ function RandomChatbox({ username, room }) {
         username === message.username ? "flex justify-end" : "flex"
        }`}
        id={username}
-       key={message.timestamp}
+       key={index}
+       //  key={message.timestamp}
       >
        <div className="p-2">
         <div className="flex gap-2">
