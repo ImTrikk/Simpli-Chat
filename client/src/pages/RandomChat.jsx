@@ -8,6 +8,7 @@ import { BsHandIndex } from "react-icons/bs";
 import { BsArrowRight } from "react-icons/bs";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import BounceLoader from "react-spinners/BounceLoader";
 
 import io from "socket.io-client";
 
@@ -20,9 +21,11 @@ function RandomChat() {
  const [showError, setShowError] = useState(false);
  const [error, setError] = useState("");
  const [room, setRoom] = useState("");
+ const [loading, isLoading] = useState(false);
 
  const handleRandomChat = async () => {
   if (username !== "") {
+   isLoading(true);
    socket.emit("random_connect", username);
   }
  };
@@ -30,6 +33,7 @@ function RandomChat() {
  useEffect(() => {
   socket.on("random_user_joined", (roomName, callback) => {
    if (callback) {
+    isLoading(false);
     toast.success("Found a match!", {
      position: "top-center",
      autoClose: 2000,
@@ -61,46 +65,71 @@ function RandomChat() {
   <>
    <div className="bg-blue-500">
     <ToastContainer autoClose={2000} />
-    <div className="mx-20">
+    <div className="mx-5 lg:mx-20">
      <div className="flex items-center justify-center h-screen">
       <div className="text-center">
-       <h1 className="font-black text-white text-5xl">Random Chat</h1>
-       <p className="text-lg font-light text-white">
-        Enter random chat with a person
-       </p>
+       {chatbox ? (
+        ""
+       ) : (
+        <div>
+         <h1 className="font-black text-white text-5xl">Random Chat</h1>
+         <p className="text-lg font-light text-white">
+          Enter random chat with a person
+         </p>
+        </div>
+       )}
        {showError ? (
         <div className="text-red-600 text-2xl font-bold">{error}</div>
        ) : (
         ""
        )}
-       {chatbox ? (
-        <RandomChatbox socket={socket} username={username} room={room} />
+       {loading ? (
+        <div className="[pt-10">
+         <div className="flex items-center justify-center text-center pt-14">
+          <BounceLoader
+           color="#ffff"
+           loading={loading}
+           size={170}
+           aria-label="Loading Spinner"
+           data-testid="loader"
+          />
+         </div>
+          <div className="text-center text-white">
+           <h1>Looking for random user, please wait...</h1>
+          </div>
+        </div>
        ) : (
         <div>
-         <div className="flex gap-2 items-center text-center pt-5">
-          <input
-           type="text"
-           value={username}
-           onChange={(e) => setUsername(e.target.value)}
-           placeholder="username..."
-           className="font-medium text-gray-400 h-10 bg-white rounded px-2 text-xs outline-none"
-          />
-          <button
-           onClick={handleRandomChat}
-           className="border border-white text-xs text-white rounded h-10 px-2"
-          >
-           Find Chat
-          </button>
-         </div>
-         <div className="text-center">
-          <button
-           onClick={handleNavMenu}
-           className="text-xs text-center text-white flex items-center gap-1 hover:text-gray-500"
-          >
-           Main menu
-           <BsArrowRight />
-          </button>
-         </div>
+         {chatbox ? (
+          <RandomChatbox socket={socket} username={username} room={room} />
+         ) : (
+          <div>
+           <div className="flex gap-2 items-center text-center pt-5">
+            <input
+             type="text"
+             value={username}
+             onChange={(e) => setUsername(e.target.value)}
+             placeholder="username..."
+             className="font-medium text-gray-400 h-10 bg-white rounded px-2 text-xs outline-none"
+            />
+            <button
+             onClick={handleRandomChat}
+             className="border border-white text-xs text-white rounded h-10 px-2"
+            >
+             Find Chat
+            </button>
+           </div>
+           <div className="text-center">
+            <button
+             onClick={handleNavMenu}
+             className="text-xs text-center text-white flex items-center gap-1 hover:text-gray-500"
+            >
+             Main menu
+             <BsArrowRight />
+            </button>
+           </div>
+          </div>
+         )}
         </div>
        )}
       </div>

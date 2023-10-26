@@ -157,15 +157,15 @@ io.on("connection", (socket) => {
  });
 
  socket.on("random_message", (messageData) => {
-  console.log("Recieved Message: ", messageData);
-  console.log("This is the room route:", messageData.room);
+  // console.log("Recieved Message: ", messageData);
+  // console.log("This is the room route:", messageData.room);
   socket.to(messageData.room).emit("random_message", messageData);
  });
 
  // socket disconnection of random user
  socket.on("random_user_disconnect", (data) => {
-  console.log("Test random user disconnect");
-  console.log("Room checker: ", data.room);
+  // console.log("Test random user disconnect");
+  // console.log("Room checker: ", data.room);
   socket.to(data.room).emit("random_user_disconnect", data.username);
  });
 
