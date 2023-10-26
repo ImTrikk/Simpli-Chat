@@ -9,7 +9,6 @@ import { MdAddAPhoto } from "react-icons/md";
 import { BsPersonCircle } from "react-icons/bs";
 import { MdCancel } from "react-icons/md";
 
-
 function Chatbox({ socket, username, room }) {
  const [message, setMessage] = useState("");
  const [userMessageList, setUserMessageList] = useState([]);
@@ -109,17 +108,17 @@ function Chatbox({ socket, username, room }) {
   <div>
    <ToastContainer autoClose={2000} />
    <div className="lg:flex items-start pt-10">
-    <div className="rounded-l h-[600px]">
+    <div className="hidden lg:block rounded-l h-[600px]">
      <UserSidebar socket={socket} username={username} room={room} />
     </div>
-    <div className="bg-gray-100 border-t border-b md:w-[700px] h-[600px] relative">
+    <div className=" bg-gray-100 border-t border-b w-full lg:w-[700px] h-[600px] relative">
      <div className="p-4 border-b border-gray-300 h-[50px] flex items-center">
       <div className="p-2 bg-blue-400 rounded flex items-center justify-center">
        <h1 className="text-white text-sm font-medium">
         <span className="font-bold">#{room}</span>
        </h1>
       </div>
-      <div className="ml-32 text-xs text-gray-500">{joinedUserMessages}</div>
+      <div className="text-xs text-gray-500">{joinedUserMessages}</div>
      </div>
      <div className="w-full bg-gray-100 p-3 h-auto">
       <ScrollToBottom className="scroll-bar h-[380px]">
@@ -234,7 +233,7 @@ function Chatbox({ socket, username, room }) {
       </div>
      </div>
     </div>
-    <div className="border-l border-r border-b rounded-r h-[600px]">
+    <div className="hidden lg:block border-l border-r border-b rounded-r h-[600px]">
      <LoggedUser socket={socket} room={room} username={username} />
     </div>
    </div>

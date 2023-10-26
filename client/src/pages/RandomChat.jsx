@@ -119,7 +119,7 @@ function RandomChat() {
              Find Chat
             </button>
            </div>
-           <div className="text-center">
+           <div className="text-center pt-2">
             <button
              onClick={handleNavMenu}
              className="text-xs text-center text-white flex items-center gap-1 hover:text-gray-500"

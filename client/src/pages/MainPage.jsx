@@ -6,12 +6,12 @@ const MainPage = () => {
  return (
   <>
    <div className="">
-    <div className="mx-48">
+    <div className="mx-5 lg:mx-48">
      <div className="flex justify-center items-center h-screen ">
       <div>
        <div className="mb-5">
         <h1 className="text-6xl text-blue-500 font-black">SimpliChat</h1>
-        <p className="pt-2 font-light text-gray-500 text-lg">
+        <p className="pt-5 font-light text-gray-500 text-lg">
          A simple synchronous chat application where you can create, join, and
          even go random chatting
         </p>
@@ -37,7 +37,7 @@ const MainPage = () => {
         </Link>
        </div>
       </div>
-      <div>
+      <div className="hidden md:block">
        <img
         src="/images/main.jpg"
         alt=""
