@@ -21,7 +21,6 @@ export function stringToColor(string) {
 
  return color;
 }
-
 export function stringAvatar(name) {
  if (typeof name !== "string" || name.trim() === "") {
   return {
@@ -36,6 +35,10 @@ export function stringAvatar(name) {
  if (nameParts.length >= 2) {
   return {
    sx: {
+    width: '30px',
+    height: '30px',
+    fontSize: 10,
+    
     bgcolor: stringToColor(name),
    },
    children: `${nameParts[0][0]}${nameParts[1][0]}`,
@@ -44,6 +47,10 @@ export function stringAvatar(name) {
   // Handle the case where there's no space in the name
   return {
    sx: {
+    width: '30px',
+    height: '30px',
+    fontSize: 10,
+    
     bgcolor: stringToColor(name),
    },
    children: `${name[0]}`, // Just use the first character of the name

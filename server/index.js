@@ -19,7 +19,6 @@ const io = new Server(server, {
 const existingRooms = new Map();
 const usersInRoom = new Map();
 const RandomUsers = new Map();
-const RandomUserUser = new Map();
 
 io.on("connection", (socket) => {
  console.log("user connected ");
@@ -86,7 +85,7 @@ io.on("connection", (socket) => {
    // Emit the message data to the room
    socket.to(messageData.room).emit("create_message", messageData);
   } catch (err) {
-   console.error("Image error:", err);
+   console.error(err);
   }
  });
 

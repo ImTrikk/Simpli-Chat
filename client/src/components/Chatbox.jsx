@@ -18,7 +18,8 @@ function Chatbox({ socket, username, room }) {
  const [image, setImage] = useState("");
  const [selectedImg, setSelelectedImg] = useState("");
 
- const sendMessage = async () => {
+ const sendMessage = async (e) => {
+  e.preventDefault();
   try {
    if (message !== "" || image !== "") {
     const messageData = {
@@ -42,30 +43,32 @@ function Chatbox({ socket, username, room }) {
 
  const handleImageChange = (e) => {
   const file = e.target.files[0];
-  if (file) {
-   if (file.size > 1048576) {
-    //bytes = 1mb
-    setImage("");
-    setSelelectedImg("");
-    toast.error("File is too large select another image, 1mb maximum ", {
-     position: "top-center",
-     autoClose: 2000,
-     hideProgressBar: false,
-     closeOnClick: true,
-     pauseOnHover: true,
-     draggable: true,
-     progress: undefined,
-     theme: "light",
-    });
-   } else {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    setSelelectedImg(file.name);
-    reader.onload = (e) => {
-     setImage(e.target.result); // Set the image as a data URL
-    };
+   if (file) {
+     if (file.size > 1048576) {
+       //bytes = 1mb
+       setImage("");
+       setSelelectedImg("");
+       toast.error("File is too large select another image, 1mb maximum ", {
+         position: "top-center",
+         autoClose: 2000,
+         hideProgressBar: false,
+         closeOnClick: true,
+         pauseOnHover: true,
+         draggable: true,
+         progress: undefined,
+         theme: "light",
+       });
+     } else {
+       const reader = new FileReader();
+       reader.readAsDataURL(file);
+       setSelelectedImg(file.name);
+       reader.onload = (e) => {
+         setImage(e.target.result); // Set the image as a data URL
+       };
+     }
+   } else { 
+     toast.error("front end errror")
    }
-  }
  };
 
  const handleRemoveFile = () => {
@@ -88,7 +91,7 @@ function Chatbox({ socket, username, room }) {
      closeOnClick: true,
      pauseOnHover: true,
      draggable: true,
-     progress: undefined,
+     progress: undefnied,
      theme: "light",
     });
 
@@ -122,7 +125,7 @@ function Chatbox({ socket, username, room }) {
       </div>
       <div className="text-xs text-gray-500">{joinedUserMessages}</div>
      </div>
-     <div className="w-full bg-gray-100 p-3 h-auto">
+     <div className="w-full bg-gray-100 h-auto">
       <ScrollToBottom className="scroll-bar h-[480px]">
        {userMessageList.map((message, index) => (
         <div
@@ -140,7 +143,9 @@ function Chatbox({ socket, username, room }) {
             }`}
            >
             {/* <BsPersonCircle className="text-blue-500" /> */}
-            <Avatar {...stringAvatar(message.username)} />
+            <div className="text-xs rounded w-[2] overflow-hidden">
+             <Avatar {...stringAvatar(message.username)} />
+            </div>
            </div>
            <div
             className={`${
@@ -179,7 +184,9 @@ function Chatbox({ socket, username, room }) {
             }`}
            >
             {/* <BsPersonCircle className="text-blue-500" /> */}
-            <Avatar {...stringAvatar(message.username)} />
+            <div className="text-xs rounded w-[2] overflow-hidden">
+             <Avatar {...stringAvatar(message.username)} />
+            </div>
            </div>
           </div>
           <div className="flex justify-end pr-1 pt-1">

@@ -172,7 +172,7 @@ function JoinRoom() {
         <div className="hidden md:block bg-blue-500 h-screen w-full"></div>
        </div>
       )}
-      <div>
+      <div className="md:flex items-center justify-center">
        {chatbox ? (
         <Chatbox socket={socket} username={userName} room={room} />
        ) : (
