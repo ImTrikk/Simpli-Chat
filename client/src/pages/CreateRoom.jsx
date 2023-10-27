@@ -51,6 +51,28 @@ const CreateRoom = () => {
      renderChatbox(false);
     }
    });
+  } else if (userName === "") {
+   toast.error(`Input username`, {
+    position: "top-center",
+    autoClose: 1000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: false,
+    draggable: true,
+    progress: undefined,
+    theme: "light",
+   });
+  } else if (room === "") {
+   toast.error(`Input room name`, {
+    position: "top-center",
+    autoClose: 1000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: false,
+    draggable: true,
+    progress: undefined,
+    theme: "light",
+   });
   }
   return () => {
    socketHelper.off("create_room");
@@ -84,7 +106,7 @@ const CreateRoom = () => {
   <>
    <div>
     <ToastContainer autoClose={1000} />
-    <LoadingBar color="#0043DC" ref={loadingBar} />
+    <LoadingBar height={7} color="#0043DC" ref={loadingBar} />
     <div className="">
      {chatbox ? (
       ""
@@ -97,18 +119,28 @@ const CreateRoom = () => {
           Create rooms and communicate with people
          </p>
          <div className="pt-5 gap-2 space-y-3">
-          <input
-           type="text"
-           placeholder="Username: "
-           onChange={(e) => setUsername(e.target.value)}
-           className=" w-full border border-blue-500 text-xs h-10 px-4 rounded outline-none"
-          />
-          <input
-           type="text"
-           placeholder="Enter room ID: "
-           onChange={(e) => setRoom(e.target.value)}
-           className=" w-full border border-blue-500 text-xs h-10 px-4 rounded outline-none"
-          />
+          <div>
+           <label htmlFor="" className="text-xs text-gray-600">
+            Username
+           </label>
+           <input
+            type="text"
+            placeholder="Your name here"
+            onChange={(e) => setUsername(e.target.value)}
+            className=" w-full border border-blue-500 text-xs h-10 px-4 rounded outline-none"
+           />
+          </div>
+          <div>
+           <label htmlFor="" className="text-xs text-gray-600">
+            Room Name
+           </label>
+           <input
+            type="text"
+            placeholder="Example: Room123, 09288"
+            onChange={(e) => setRoom(e.target.value)}
+            className=" w-full border border-blue-500 text-xs h-10 px-4 rounded outline-none"
+           />
+          </div>
           <div className="flex justify-between items-center">
            <button
             onClick={mainMenu}
@@ -142,7 +174,7 @@ const CreateRoom = () => {
            A simple way to chat with buddies
           </p>
           <img
-           src="/images/simplichat.png"
+           src="/images/SimpliChat.png"
            alt=""
            className="w-[500px] h-auto rounded border-spacing-7 border-white"
           />

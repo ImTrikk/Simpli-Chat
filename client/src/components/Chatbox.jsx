@@ -8,7 +8,6 @@ import { UserSidebar } from "./UserSidebar";
 import { MdAddAPhoto } from "react-icons/md";
 import { BsPersonCircle } from "react-icons/bs";
 import { MdCancel } from "react-icons/md";
-import Avatar from "avataaars";
 
 function Chatbox({ socket, username, room }) {
  const [message, setMessage] = useState("");
@@ -176,7 +175,7 @@ function Chatbox({ socket, username, room }) {
              username === message.username ? "mt-auto" : "hidden"
             }`}
            >
-            {/* <BsPersonCircle className="text-blue-500" /> */}
+            <BsPersonCircle className="text-blue-500" />
            </div>
           </div>
           <div className="flex justify-end pr-1 pt-1">

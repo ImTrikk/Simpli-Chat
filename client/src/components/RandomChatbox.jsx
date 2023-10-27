@@ -7,11 +7,6 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 
-import { io } from "socket.io-client";
-
-// const socket = io.connection("https://simpli-chat-server.vercel.app/");
-
-// const socket = io.connect("http://localhost:3001");
 
 function RandomChatbox({ socket, username, room }) {
  const [message, setMessage] = useState("");
