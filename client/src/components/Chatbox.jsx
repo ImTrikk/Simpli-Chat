@@ -8,6 +8,7 @@ import { UserSidebar } from "./UserSidebar";
 import { MdAddAPhoto } from "react-icons/md";
 import { BsPersonCircle } from "react-icons/bs";
 import { MdCancel } from "react-icons/md";
+import Avatar from "avataaars";
 
 function Chatbox({ socket, username, room }) {
  const [message, setMessage] = useState("");
@@ -121,7 +122,7 @@ function Chatbox({ socket, username, room }) {
       <div className="text-xs text-gray-500">{joinedUserMessages}</div>
      </div>
      <div className="w-full bg-gray-100 p-3 h-auto">
-      <ScrollToBottom className="scroll-bar h-[380px]">
+      <ScrollToBottom className="scroll-bar h-[480px]">
        {userMessageList.map((message, index) => (
         <div
          className={`   ${
@@ -175,7 +176,7 @@ function Chatbox({ socket, username, room }) {
              username === message.username ? "mt-auto" : "hidden"
             }`}
            >
-            <BsPersonCircle className="text-blue-500" />
+            {/* <BsPersonCircle className="text-blue-500" /> */}
            </div>
           </div>
           <div className="flex justify-end pr-1 pt-1">
