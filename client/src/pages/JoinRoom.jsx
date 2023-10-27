@@ -122,18 +122,28 @@ function JoinRoom() {
           Join rooms and chit chat with different people in real time.
          </p>
          <div className="pt-5 gap-2 space-y-3 md:w-[400px]">
-          <input
-           type="text"
-           placeholder="Username: "
-           onChange={(e) => setUsername(e.target.value)}
-           className="border border-blue-500 text-xs h-10 px-4 rounded outline-none w-full"
-          />
-          <input
-           type="text"
-           placeholder="Enter room ID: "
-           onChange={(e) => setRoom(e.target.value)}
-           className="border border-blue-500 text-xs h-10 px-4 rounded outline-none w-full"
-          />
+          <div>
+           <label htmlFor="" className="text-xs text-gray-600">
+            Username
+           </label>
+           <input
+            type="text"
+            placeholder="Your name here"
+            onChange={(e) => setUsername(e.target.value)}
+            className="border border-blue-500 text-xs h-10 px-4 rounded outline-none w-full"
+           />
+          </div>
+          <div>
+           <label htmlFor="" className="text-xs text-gray-600">
+            Room Name
+           </label>
+           <input
+            type="text"
+            placeholder="Enter an existing room name"
+            onChange={(e) => setRoom(e.target.value)}
+            className="border border-blue-500 text-xs h-10 px-4 rounded outline-none w-full"
+           />
+          </div>
           <div className="flex items-center justify-between">
            <button
             onClick={mainMenu}

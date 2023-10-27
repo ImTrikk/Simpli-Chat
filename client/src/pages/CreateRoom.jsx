@@ -2,14 +2,13 @@ import React from "react";
 import { Navbar } from "../components/Navbar";
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-// import io from "socket.io-client";
 import Chatbox from "../components/Chatbox";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 //mport socket from "../../socket/socket";
 import LoadingBar from "react-top-loading-bar";
 import { BsArrowRight } from "react-icons/bs";
 import io from "socket.io-client";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const socket = io.connect("http://localhost:3001");
 // const socket = io.connect("https://simpli-chat-server.vercel.app/");
