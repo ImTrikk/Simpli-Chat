@@ -189,9 +189,15 @@ function Chatbox({ socket, username, room }) {
             </div>
            </div>
           </div>
-          <div className="flex justify-end pr-1 pt-1">
+          <div
+           className={`${
+            message === message.username
+             ? "flex justify-start pr-10"
+             : "flex justify-end pr-10"
+           }`}
+          >
            <p className="text-xs text-gray-400" id="time">
-            {"sent at " + message.time}
+            {message.time}
            </p>
           </div>
          </div>
