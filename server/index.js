@@ -24,7 +24,6 @@ io.on("connection", (socket) => {
  socket.on("create_room", (data, username, callback) => {
   try {
    if (existingRooms.has(data)) {
-    console.log("Room already exist");
     callback(true);
    } else {
     callback(false);
@@ -32,7 +31,6 @@ io.on("connection", (socket) => {
      socket.join(data);
      existingRooms.set(data, 1);
      usersInRoom.set(data, [username]);
-     console.log("Room created!");
      socket.to(data).emit("user_joined", username);
     }
    }
@@ -41,7 +39,6 @@ io.on("connection", (socket) => {
   }
  });
 
- // !
  socket.on("join_room", (room, user, callback) => {
   try {
    if (!existingRooms.has(room)) {
