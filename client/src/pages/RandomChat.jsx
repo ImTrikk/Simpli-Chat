@@ -61,6 +61,11 @@ function RandomChat() {
   }, 2000);
  };
 
+ const handleCancelSearch = () => {
+  isLoading(false);
+  socket.emit("handle-cancel-search");
+ };
+
  return (
   <>
    <div className="bg-blue-500">
@@ -94,9 +99,17 @@ function RandomChat() {
            data-testid="loader"
           />
          </div>
-          <div className="text-center text-white">
-           <h1>Looking for random user, please wait...</h1>
-          </div>
+         <div className="text-center text-white">
+          <h1>Looking for random user, please wait...</h1>
+         </div>
+         <div className="pt-10">
+          <button
+           onClick={handleCancelSearch}
+           className="bg-red-500 px-2 rounded h-10 text-white text-sm"
+          >
+           cancel search
+          </button>
+         </div>
         </div>
        ) : (
         <div>

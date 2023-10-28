@@ -111,7 +111,7 @@ function RandomChatbox({ socket, username, room }) {
 
  const navigate = useNavigate();
 
- const handleDisconnect = () => {
+ const handleDisconnect = async () => {
   socket.emit("random_user_disconnect", { room, username });
   toast.info(`leaving random chatting`, {
    position: "top-center",

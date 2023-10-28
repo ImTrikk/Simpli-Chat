@@ -118,13 +118,10 @@ io.on("connection", (socket) => {
 
  socket.on("random_connect", (username) => {
   RandomUsers.set(socket.id, 1);
-  console.log("Random users: ", RandomUsers);
-  console.log("test length: ", RandomUsers.size);
 
   if (RandomUsers.size === 2) {
    // Two users are available, create a chat room name
    const roomName = generateUniqueRoomName();
-   console.log("Room name generated: ", roomName);
 
    // Get the keys (socket IDs) from the map
    const socketIds = [...RandomUsers.keys()];
@@ -149,8 +146,12 @@ io.on("connection", (socket) => {
 
    // Reset the RandomUsers array for other users to be paired
    RandomUsers.clear();
-   console.log("Random user size after deletion: ", RandomUsers.size);
   }
+ });
+
+ //removes the socket.id from randomUsers if the person decides to cancel
+ socket.on("handle-cancel-search", () => {
+  RandomUsers.clear(socket.id);
  });
 
  socket.on("random_message", (messageData) => {
