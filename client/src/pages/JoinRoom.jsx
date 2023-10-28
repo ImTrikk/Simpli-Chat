@@ -78,6 +78,28 @@ function JoinRoom() {
      }
     }
    });
+  } else if (userName === "") {
+   toast.error("Enter your username", {
+    position: "top-center",
+    autoClose: 2000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "light",
+   });
+  } else if (room === "") {
+   toast.error("Enter valid room name", {
+    position: "top-center",
+    autoClose: 2000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "light",
+   });
   }
  };
 
