@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { FaUsers } from "react-icons/fa";
 import { BsFillPersonFill } from "react-icons/bs";
+import { Avatar } from "@mui/material";
+import { stringAvatar } from "../../utils/StringAvatar";
 
 export const LoggedUser = ({ socket, room, username }) => {
  const [listUser, setListUser] = useState([username]);
@@ -45,13 +47,11 @@ export const LoggedUser = ({ socket, room, username }) => {
     </div>
     <div className="p-2 space-y-2">
      {listUser.map((user, index) => (
-      <div className="flex items-center" key={index}>
-       <div className="border border-blue-500 rounded w-8 h-8 flex items-center justify-center">
-        <BsFillPersonFill className="text-blue-500" />
-       </div>
+      <div className="flex items-center gap-2" key={index}>
+       <Avatar {...stringAvatar(user)} />
        <div className="bg-gray-100 rounded h-8 px-4 flex items-center">
         <div
-         className="flex items-center gap-5 justify-between w-full text-gray-500 text-xs"
+         className="flex items-center gap-3 justify-between w-full text-gray-500 text-xs"
          key={index}
         >
          <div className="w-[100px]">{user}</div>

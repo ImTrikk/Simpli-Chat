@@ -6,17 +6,17 @@ import { MdCancel } from "react-icons/md";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
-
+import { Avatar } from "@mui/material";
+import { stringAvatar } from "../../utils/StringAvatar";
 
 function RandomChatbox({ socket, username, room }) {
  const [message, setMessage] = useState("");
  const [messageList, setMessageList] = useState([]);
  const [image, setImage] = useState("");
  const [selectedImg, setSelelectedImg] = useState("");
- const [error, setError] = useState("");
- const [errorShow, setErrorShow] = useState(null);
 
- const handleSendMessage = async () => {
+ const handleSendMessage = async (e) => {
+  e.preventDefault();
   if (message !== "" || image !== "") {
    const messageData = {
     image: image,
@@ -46,6 +46,8 @@ function RandomChatbox({ socket, username, room }) {
  };
 
  const handleImageChange = (e) => {
+  e.preventDefault();
+  console.log("checker frontend");
   const file = e.target.files[0];
   if (file) {
    if (file.size > 1048576) {
@@ -64,6 +66,7 @@ function RandomChatbox({ socket, username, room }) {
     });
    } else {
     const reader = new FileReader();
+    console.log(reader);
     reader.readAsDataURL(file);
     setSelelectedImg(file.name);
     reader.onload = (e) => {
@@ -110,7 +113,6 @@ function RandomChatbox({ socket, username, room }) {
  const navigate = useNavigate();
 
  const handleDisconnect = () => {
-  console.log("room: ", room);
   socket.emit("random_user_disconnect", { room, username });
   toast.info(`leaving random chatting`, {
    position: "top-center",
@@ -159,7 +161,9 @@ function RandomChatbox({ socket, username, room }) {
          <div
           className={` ${username === message.username ? "hidden" : "mt-auto"}`}
          >
-          <BsPersonCircle className="text-blue-500" />
+          <div className="text-xs rounded w-[2] overflow-hidden">
+           <Avatar {...stringAvatar(message.username)} />
+          </div>
          </div>
          <div
           className={`${
@@ -195,7 +199,9 @@ function RandomChatbox({ socket, username, room }) {
          <div
           className={` ${username === message.username ? "mt-auto" : "hidden"}`}
          >
-          <BsPersonCircle className="text-blue-500" />
+          <div className="text-xs rounded w-[2] overflow-hidden">
+           <Avatar {...stringAvatar(message.username)} />
+          </div>
          </div>
         </div>
         <div className="flex justify-end pr-1 pt-1">

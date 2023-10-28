@@ -21,8 +21,6 @@ const usersInRoom = new Map();
 const RandomUsers = new Map();
 
 io.on("connection", (socket) => {
- console.log("user connected ");
-
  socket.on("create_room", (data, username, callback) => {
   try {
    if (existingRooms.has(data)) {
@@ -168,9 +166,7 @@ io.on("connection", (socket) => {
   socket.to(data.room).emit("random_user_disconnect", data.username);
  });
 
- socket.on("disconnect", () => {
-  console.log("Disconnected");
- });
+ socket.on("disconnect", () => {});
 });
 
 server.listen(3001, () => {

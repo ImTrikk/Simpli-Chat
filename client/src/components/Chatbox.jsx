@@ -18,8 +18,7 @@ function Chatbox({ socket, username, room }) {
  const [image, setImage] = useState("");
  const [selectedImg, setSelelectedImg] = useState("");
 
- const sendMessage = async (e) => {
-  e.preventDefault();
+ const sendMessage = async () => {
   try {
    if (message !== "" || image !== "") {
     const messageData = {
@@ -33,8 +32,8 @@ function Chatbox({ socket, username, room }) {
     await socket.emit("create_message", messageData);
     setUserMessageList((list) => [...list, messageData]);
     setMessage("");
-    setImage("");
     setSelelectedImg("");
+    setImage("");
    }
   } catch (err) {
    console.log(err);
@@ -42,33 +41,34 @@ function Chatbox({ socket, username, room }) {
  };
 
  const handleImageChange = (e) => {
+  e.preventDefault();
   const file = e.target.files[0];
-   if (file) {
-     if (file.size > 1048576) {
-       //bytes = 1mb
-       setImage("");
-       setSelelectedImg("");
-       toast.error("File is too large select another image, 1mb maximum ", {
-         position: "top-center",
-         autoClose: 2000,
-         hideProgressBar: false,
-         closeOnClick: true,
-         pauseOnHover: true,
-         draggable: true,
-         progress: undefined,
-         theme: "light",
-       });
-     } else {
-       const reader = new FileReader();
-       reader.readAsDataURL(file);
-       setSelelectedImg(file.name);
-       reader.onload = (e) => {
-         setImage(e.target.result); // Set the image as a data URL
-       };
-     }
-   } else { 
-     toast.error("front end errror")
+  if (file) {
+   if (file.size > 1048576) {
+    //bytes = 1mb
+    setImage("");
+    setSelelectedImg("");
+    toast.error("File is too large select another image, 1mb maximum ", {
+     position: "top-center",
+     autoClose: 2000,
+     hideProgressBar: false,
+     closeOnClick: true,
+     pauseOnHover: true,
+     draggable: true,
+     progress: undefined,
+     theme: "light",
+    });
+   } else {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    setSelelectedImg(file.name);
+    reader.onload = (e) => {
+     setImage(e.target.result); // Set the image as a data URL
+    };
    }
+  } else {
+   toast.error("front end errror");
+  }
  };
 
  const handleRemoveFile = () => {
@@ -91,7 +91,7 @@ function Chatbox({ socket, username, room }) {
      closeOnClick: true,
      pauseOnHover: true,
      draggable: true,
-     progress: undefnied,
+     progress: undefined,
      theme: "light",
     });
 
