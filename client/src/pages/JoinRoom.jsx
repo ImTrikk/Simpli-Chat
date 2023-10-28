@@ -115,7 +115,6 @@ function JoinRoom() {
   }, 1000);
  };
 
- const navMenu = useNavigate();
 
  const mainMenu = () => {
   loadingBar.current.continuousStart(60);

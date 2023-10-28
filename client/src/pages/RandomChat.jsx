@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Navbar } from "../components/Navbar";
 import RandomChatbox from "../components/RandomChatbox";
@@ -9,6 +9,7 @@ import { BsArrowRight } from "react-icons/bs";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import BounceLoader from "react-spinners/BounceLoader";
+import LoadingBar from "react-top-loading-bar";
 
 import io from "socket.io-client";
 
@@ -21,6 +22,8 @@ function RandomChat() {
  const [showError, setShowError] = useState(false);
  const [error, setError] = useState("");
  const [room, setRoom] = useState("");
+ const loadingBar = useRef(null);
+
  const [loading, isLoading] = useState(false);
 
  const handleRandomChat = async () => {
@@ -65,21 +68,27 @@ function RandomChat() {
   };
  });
 
- const navMenu = useNavigate();
- const handleNavMenu = () => {
-  setTimeout(() => {
-   navMenu("/");
-  }, 2000);
- };
-
  const handleCancelSearch = () => {
   isLoading(false);
   socket.emit("handle-cancel-search");
  };
 
+ const navMenu = useNavigate();
+
+ const handleNavMenu = () => {
+  loadingBar.current.continuousStart(60);
+  setTimeout(() => {
+   loadingBar.current.complete();
+   setTimeout(() => {
+    navMenu("/");
+   }, 1200);
+  }, 1000);
+ };
+
  return (
   <>
    <div className="bg-blue-500">
+    <LoadingBar height={7} color="#0043DC" ref={loadingBar} />
     <ToastContainer autoClose={2000} />
     <div className="mx-5 lg:mx-20">
      <div className="flex items-center justify-center h-screen">
