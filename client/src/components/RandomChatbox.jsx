@@ -16,7 +16,6 @@ function RandomChatbox({ socket, username, room }) {
  const [selectedImg, setSelelectedImg] = useState("");
 
  const handleSendMessage = async (e) => {
-  e.preventDefault();
   if (message !== "" || image !== "") {
    const messageData = {
     image: image,
@@ -156,20 +155,20 @@ function RandomChatbox({ socket, username, room }) {
        key={index}
        //  key={message.timestamp}
       >
-       <div className="p-2">
+       <div className="p-3">
         <div className="flex gap-2">
          <div
           className={` ${username === message.username ? "hidden" : "mt-auto"}`}
          >
-          <div className="text-xs rounded w-[2] overflow-hidden">
+          <div className="text-xs rounded overflow-hidden">
            <Avatar {...stringAvatar(message.username)} />
           </div>
          </div>
          <div
           className={`${
            username === message.username
-            ? "bg-blue-500  text-white px-3 py-2 rounded-t-lg rounded-bl-xl max-w-[300px]"
-            : "bg-gray-200 text-gray-500 px-3 py-2  rounded-t-xl rounded-br-xl max-w-[300px]"
+            ? "text-justify bg-blue-500  text-white px-3 py-2 rounded-t-lg rounded-bl-xl max-w-[300px]"
+            : "text-justify bg-gray-200 text-gray-500 px-3 py-2  rounded-t-xl rounded-br-xl max-w-[300px]"
           }`}
          >
           <div className="flex items-center gap-2">
