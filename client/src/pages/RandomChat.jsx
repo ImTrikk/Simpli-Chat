@@ -27,6 +27,17 @@ function RandomChat() {
   if (username !== "") {
    isLoading(true);
    socket.emit("random_connect", username);
+  } else {
+   toast.error("Enter your username first", {
+    position: "top-center",
+    autoClose: 2000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "light",
+   });
   }
  };
 
@@ -79,7 +90,7 @@ function RandomChat() {
         <div>
          <h1 className="font-black text-white text-5xl">Random Chat</h1>
          <p className="text-lg font-light text-white">
-          Enter random chat with a person
+          Connect and chat with random people
          </p>
         </div>
        )}
@@ -99,10 +110,10 @@ function RandomChat() {
            data-testid="loader"
           />
          </div>
-         <div className="text-center text-white">
+         <div className="text-center text-white pt-10">
           <h1>Looking for random user, please wait...</h1>
          </div>
-         <div className="pt-10">
+         <div className="pt-5">
           <button
            onClick={handleCancelSearch}
            className="bg-red-500 px-2 rounded h-10 text-white text-sm"
