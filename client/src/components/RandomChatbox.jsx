@@ -203,9 +203,9 @@ function RandomChatbox({ socket, username, room }) {
           </div>
          </div>
         </div>
-        <div className="flex justify-end pr-1 pt-1">
+           <div className={`${username === message.username ? "flex justify-end pr-10 pt-1" : "flex justify-start pl-10 pt-1"}`}>
          <p className="text-xs text-gray-400" id="time">
-          {"sent at " + message.time}
+          {message.time}
          </p>
         </div>
        </div>
@@ -237,7 +237,7 @@ function RandomChatbox({ socket, username, room }) {
      />
      <div className="flex items-center gap-2">
       <label htmlFor="fileInput" className="cursor-pointer">
-       <div className="border border-blue-500 rounded flex items-center justify-center h-8 p-2">
+       <div className="border border-blue-500 rounded flex items-center justify-center h-10 p-2">
         <MdAddAPhoto size={22} className="text-blue-500" />
         <input
          type="file"
@@ -250,7 +250,7 @@ function RandomChatbox({ socket, username, room }) {
       </label>
       <button
        onClick={handleSendMessage}
-       className="bg-blue-500 text-xs text-white px-5 rounded h-8"
+       className="bg-blue-500 text-xs text-white px-5 rounded h-10"
       >
        send
       </button>
