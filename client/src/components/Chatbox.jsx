@@ -58,6 +58,7 @@ function Chatbox({ socket, username, room }) {
      progress: undefined,
      theme: "light",
     });
+    fileInput.value = "";
    } else {
     const reader = new FileReader();
     reader.readAsDataURL(file);
@@ -170,7 +171,7 @@ function Chatbox({ socket, username, room }) {
              <p>{message.message}</p>
             </div>
             {message.image && (
-             <div className="bg-white p-1 rounded">
+             <div key={message.image} className="bg-white p-1 rounded">
               <img
                src={message.image}
                alt="Image"
@@ -192,9 +193,9 @@ function Chatbox({ socket, username, room }) {
           </div>
           <div
            className={`${
-            message === message.username
-             ? "flex justify-start pr-10"
-             : "flex justify-end pr-10"
+            username === message.username
+             ? "flex justify-end pr-10 pt-1"
+             : "flex justify-start pl-10 pt-1"
            }`}
           >
            <p className="text-xs text-gray-400" id="time">
