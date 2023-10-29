@@ -54,7 +54,7 @@ export const UserSidebar = ({ socket, username, room }) => {
   <>
    <ToastContainer />
    <div className="w-full bg-blue-500 rounded-l h-full relative">
-    <div className=" flex items-center justify-between rounded-l w-[150px]">
+    <div className=" flex items-center justify-between rounded-l">
      <div className="p-3 w-full flex items-center">
       <h1 className="text-2xl font-black text-white">SimpliChat</h1>
      </div>

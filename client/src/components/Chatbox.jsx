@@ -71,7 +71,8 @@ function Chatbox({ socket, username, room }) {
   }
  };
 
- const handleRemoveFile = () => {
+ const handleRemoveFile = (e) => {
+  e.preventDefault();
   setImage("");
   setSelelectedImg("");
  };

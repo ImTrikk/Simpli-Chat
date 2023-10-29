@@ -203,7 +203,13 @@ function RandomChatbox({ socket, username, room }) {
           </div>
          </div>
         </div>
-           <div className={`${username === message.username ? "flex justify-end pr-10 pt-1" : "flex justify-start pl-10 pt-1"}`}>
+        <div
+         className={`${
+          username === message.username
+           ? "flex justify-end pr-10 pt-1"
+           : "flex justify-start pl-10 pt-1"
+         }`}
+        >
          <p className="text-xs text-gray-400" id="time">
           {message.time}
          </p>
