@@ -63,6 +63,7 @@ function RandomChatbox({ socket, username, room }) {
      progress: undefined,
      theme: "light",
     });
+    fileInput.value = "";
    } else {
     const reader = new FileReader();
     console.log(reader);
