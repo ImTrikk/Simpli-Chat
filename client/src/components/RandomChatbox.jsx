@@ -76,20 +76,20 @@ function RandomChatbox({ socket, username, room }) {
 		} else {
 			fileInput.value = "";
 			console.log("There is an error");
-		}
-	};
-
-	const handleRemoveFile = () => {
-		setImage("");
-		setSelelectedImg("");
-	};
-
-	useEffect(() => {
-		const handleReceivedMessage = (messageData) => {
-			setMessageList((list) => [...list, messageData]);
+			}
 		};
 
-		socket.on("random_message", handleReceivedMessage);
+		const handleRemoveFile = () => {
+			setImage("");
+			setSelelectedImg("");
+		};
+
+		useEffect(() => {
+			const handleReceivedMessage = (messageData) => {
+				setMessageList((list) => [...list, messageData]);
+			};
+
+			socket.on("random_message", handleReceivedMessage);
 
 		socket.on("random_user_disconnect", (username) => {
 			toast.info(`${username} has left, ending room in 3 seconds`, {
@@ -138,7 +138,7 @@ function RandomChatbox({ socket, username, room }) {
 			<ToastContainer autoClose={2000} />
 			<div className="bg-white rounded w-[500px] h-[600px] relative ">
 				<div className="bg-gray-700 p-4 rounded flex items-center justify-between">
-					<h1 className="text-white">Chatting as {username}</h1>
+					<h1 className="text-white font-bold text-xl">Chatting {username}</h1>
 					<button
 						onClick={handleDisconnect}
 						className="bg-red-500 text-white rounded px-2 h-10"
