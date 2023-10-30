@@ -65,14 +65,17 @@ function RandomChatbox({ socket, username, room }) {
     });
     fileInput.value = "";
    } else {
+    fileInput.value = "";
     const reader = new FileReader();
-    console.log(reader);
     reader.readAsDataURL(file);
     setSelelectedImg(file.name);
     reader.onload = (e) => {
      setImage(e.target.result); // Set the image as a data URL
     };
    }
+  } else {
+   fileInput.value = "";
+   console.log("There is an error");
   }
  };
 
@@ -133,7 +136,7 @@ function RandomChatbox({ socket, username, room }) {
  return (
   <div>
    <ToastContainer autoClose={2000} />
-   <div className="bg-white rounded w-[500px] h-[550px] relative ">
+   <div className="bg-white rounded w-[500px] h-[600px] relative ">
     <div
      className="bg-gray-700 p-4 rounded flex items-center justify-between
     "
@@ -146,7 +149,7 @@ function RandomChatbox({ socket, username, room }) {
       Disconnect
      </button>
     </div>
-    <ScrollToBottom className="scroll-bar pt-5 h-[420px]">
+    <ScrollToBottom className="scroll-bar h-[470px]">
      {messageList.map((message, index) => (
       <div
        className={` ${
@@ -219,9 +222,9 @@ function RandomChatbox({ socket, username, room }) {
       </div>
      ))}
     </ScrollToBottom>
-    <div className="absolute bottom-10 left-0 right-0 p-3">
+    <div className="absolute bottom-12 left-0 right-0 p-4">
      {selectedImg && (
-      <div className=" border border-blue-300 rounded flex items-center justify-between p-3">
+      <div className=" border border-blue-300 bg-white rounded flex items-center justify-between p-3">
        <div className="text-xs text-blue-500">
         Attached image: {selectedImg}
        </div>

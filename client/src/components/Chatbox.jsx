@@ -60,6 +60,7 @@ function Chatbox({ socket, username, room }) {
     });
     fileInput.value = "";
    } else {
+    fileInput.value = "";
     const reader = new FileReader();
     reader.readAsDataURL(file);
     setSelelectedImg(file.name);
@@ -68,6 +69,7 @@ function Chatbox({ socket, username, room }) {
     };
    }
   } else {
+   fileInput.value = "";
    toast.error("front end errror");
   }
  };
