@@ -18,6 +18,8 @@ function Chatbox({ socket, username, room }) {
 	const [image, setImage] = useState("");
 	const [selectedImg, setSelelectedImg] = useState("");
 
+
+	// function for sending a message
 	const sendMessage = async () => {
 		try {
 			if (message !== "" || image !== "") {
@@ -29,6 +31,7 @@ function Chatbox({ socket, username, room }) {
 					room: room,
 					image: image,
 				};
+				
 				await socket.emit("create_message", messageData);
 				setUserMessageList((list) => [...list, messageData]);
 				setMessage("");

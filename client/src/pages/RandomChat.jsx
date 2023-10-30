@@ -14,10 +14,10 @@ import { buildUrl } from "../../utils/buildUrl";
 
 import io from "socket.io-client";
 
-const socket = io.connect(
-	"https://simplichat-server-production.up.railway.app",
-);
-// const socket = io.connect("http://localhost:3001");
+// const socket = io.connect(
+// 	"https://simplichat-server-production.up.railway.app",
+// );
+const socket = io.connect("http://localhost:3001");
 
 function RandomChat() {
 	const [chatbox, setChatbox] = useState(false);

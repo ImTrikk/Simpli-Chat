@@ -9,10 +9,10 @@ import io from "socket.io-client";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-// const socket = io.connect("http://localhost:3001");
-const socket = io.connect(
-	"https://simplichat-server-production.up.railway.app",
-);
+const socket = io.connect("http://localhost:3001");
+// const socket = io.connect(
+// 	"https://simplichat-server-production.up.railway.app",
+// );
 
 const CreateRoom = () => {
 	const [userName, setUsername] = useState("");
@@ -185,7 +185,7 @@ const CreateRoom = () => {
 					)}
 					{chatbox ? (
 						<div className="md:flex items-center justify-center w-full">
-							<Chatbox socket={socketHelper} username={userName} room={room} />
+							<Chatbox socket={socket} username={userName} room={room} />
 						</div>
 					) : (
 						""

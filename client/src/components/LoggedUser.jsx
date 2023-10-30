@@ -24,7 +24,7 @@ export const LoggedUser = ({ socket, room, username }) => {
 
   socket.on("user_joined", handleUserJoined);
   socket.on("user_left", handleUserLeft);
-  socket.on("current_users", handleCurrentUsers);
+  // socket.on("current_users", handleCurrentUsers);
   socket.on("all_usernames", handleCurrentUsers);
   // return () => {
   //   socket.off("user_joined", handleUserJoined);

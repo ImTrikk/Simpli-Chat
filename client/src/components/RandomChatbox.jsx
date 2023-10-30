@@ -15,7 +15,7 @@ function RandomChatbox({ socket, username, room }) {
 	const [image, setImage] = useState("");
 	const [selectedImg, setSelelectedImg] = useState("");
 
-	const handleSendMessage = async (e) => {
+	const handleSendMessage = async () => {
 		if (message !== "" || image !== "") {
 			const messageData = {
 				image: image,

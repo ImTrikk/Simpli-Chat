@@ -7,10 +7,10 @@ import LoadingBar from "react-top-loading-bar";
 import { BsArrowRight } from "react-icons/bs";
 import { io } from "socket.io-client";
 
-const socket = io.connect(
-	"https://simplichat-server-production.up.railway.app",
-);
-// const socket = io.connect("http://localhost:3001");
+// const socket = io.connect(
+// 	"https://simplichat-server-production.up.railway.app",
+// );
+const socket = io.connect("http://localhost:3001");
 
 function JoinRoom() {
 	const [userName, setUsername] = useState("");
