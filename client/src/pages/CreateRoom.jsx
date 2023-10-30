@@ -3,25 +3,16 @@ import { Navbar } from "../components/Navbar";
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import Chatbox from "../components/Chatbox";
-//mport socket from "../../socket/socket";
 import LoadingBar from "react-top-loading-bar";
 import { BsArrowRight } from "react-icons/bs";
 import io from "socket.io-client";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { buildUrl } from "../../utils/buildUrl";
 
 // const socket = io.connect("http://localhost:3001");
-// const socket = io.connect(
-// 	"https://railway.app/project/0921ef21-dcee-4779-a93d-00bb724c6eeb/service/236ec57f-9a5e-4d23-a9b7-295ac08c5486",
-// );
-const socket = async () => {
-	await fetch(
-		buildUrl(
-			"https://railway.app/project/0921ef21-dcee-4779-a93d-00bb724c6eeb/service/236ec57f-9a5e-4d23-a9b7-295ac08c5486",
-		),
-	);
-};
+const socket = io.connect(
+	"https://railway.app/project/0921ef21-dcee-4779-a93d-00bb724c6eeb/service/236ec57f-9a5e-4d23-a9b7-295ac08c5486",
+);
 
 const CreateRoom = () => {
 	const [userName, setUsername] = useState("");

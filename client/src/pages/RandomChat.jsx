@@ -14,17 +14,10 @@ import { buildUrl } from "../../utils/buildUrl";
 
 import io from "socket.io-client";
 
-// const socket = io.connect(
-// 	"https://railway.app/project/0921ef21-dcee-4779-a93d-00bb724c6eeb/service/236ec57f-9a5e-4d23-a9b7-295ac08c5486",
-// );
+const socket = io.connect(
+	"https://railway.app/project/0921ef21-dcee-4779-a93d-00bb724c6eeb/service/236ec57f-9a5e-4d23-a9b7-295ac08c5486",
+);
 // const socket = io.connect("http://localhost:3001");
-const socket = async () => {
-	await fetch(
-		buildUrl(
-			"https://railway.app/project/0921ef21-dcee-4779-a93d-00bb724c6eeb/service/236ec57f-9a5e-4d23-a9b7-295ac08c5486",
-		),
-	);
-};
 
 function RandomChat() {
 	const [chatbox, setChatbox] = useState(false);
