@@ -9,11 +9,12 @@ import { BsArrowRight } from "react-icons/bs";
 import io from "socket.io-client";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { buildUrl } from "../../utils/buildUrl";
 
 // const socket = io.connect("http://localhost:3001");
-const socket = io.connect(
-	"https://railway.app/project/0921ef21-dcee-4779-a93d-00bb724c6eeb/service/236ec57f-9a5e-4d23-a9b7-295ac08c5486",
-);
+// const socket = io.connect(
+// 	"https://railway.app/project/0921ef21-dcee-4779-a93d-00bb724c6eeb/service/236ec57f-9a5e-4d23-a9b7-295ac08c5486",
+// );
 
 const CreateRoom = () => {
 	const [userName, setUsername] = useState("");
@@ -22,6 +23,14 @@ const CreateRoom = () => {
 	const loadingBar = useRef(null);
 
 	const socketHelper = socket;
+
+	const socket = async () => {
+		await fetch(
+			buildUrl(
+				"https://railway.app/project/0921ef21-dcee-4779-a93d-00bb724c6eeb/service/236ec57f-9a5e-4d23-a9b7-295ac08c5486",
+			),
+		);
+	};
 
 	const createRoom = async ({ data }) => {
 		if (userName !== "" && room !== "") {
