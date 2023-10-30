@@ -11,7 +11,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 // const socket = io.connect("http://localhost:3001");
 const socket = io.connect(
-	"https://railway.app/project/0921ef21-dcee-4779-a93d-00bb724c6eeb/service/236ec57f-9a5e-4d23-a9b7-295ac08c5486",
+	"https://simplichat-server-production.up.railway.app",
 );
 
 const CreateRoom = () => {
