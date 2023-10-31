@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import ScrollToBottom from "react-scroll-to-bottom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { LoggedUser } from "./LoggedUser";
 import { UserSidebar } from "./UserSidebar";
 import { MdAddAPhoto } from "react-icons/md";
-import { BsPersonCircle } from "react-icons/bs";
 import { MdCancel } from "react-icons/md";
 import { Avatar } from "@mui/material";
 import { stringAvatar } from "../../utils/StringAvatar";
@@ -18,20 +16,22 @@ function Chatbox({ socket, username, room }) {
 	const [image, setImage] = useState("");
 	const [selectedImg, setSelelectedImg] = useState("");
 
+	let currentDate = new Date();
+	let am_pm = currentDate.toLocaleTimeString().replace(/:\d+ /, " ");
 
 	// function for sending a message
 	const sendMessage = async () => {
 		try {
 			if (message !== "" || image !== "") {
 				const messageData = {
-					time:
-						new Date(Date.now()).getHours() + ":" + new Date(Date.now()).getMinutes(),
+					time: am_pm,
+					// new Date(Date.now()).getHours() + ":" + new Date(Date.now()).getMinutes(),
 					message: message,
 					username: username,
 					room: room,
 					image: image,
 				};
-				
+
 				await socket.emit("create_message", messageData);
 				setUserMessageList((list) => [...list, messageData]);
 				setMessage("");
@@ -130,7 +130,7 @@ function Chatbox({ socket, username, room }) {
 								<span className="font-bold">#{room}</span>
 							</h1>
 						</div>
-						<div className="text-xs text-gray-500">{joinedUserMessages}</div>
+						{/* <div className="text-xs text-gray-500">{joinedUserMessages}</div> */}
 					</div>
 					<div className="w-full bg-gray-100 h-auto">
 						<ScrollToBottom className="scroll-bar h-[480px]">

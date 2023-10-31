@@ -5,9 +5,9 @@ import { useNavigate } from "react-router-dom";
 import Chatbox from "../components/Chatbox";
 import LoadingBar from "react-top-loading-bar";
 import { BsArrowRight } from "react-icons/bs";
-import io from "socket.io-client";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import io from "socket.io-client";
 
 const socket = io.connect("http://localhost:3001");
 // const socket = io.connect(
@@ -21,7 +21,6 @@ const CreateRoom = () => {
 	const loadingBar = useRef(null);
 
 	// const socketHelper = socket;
-
 	const createRoom = async ({ data }) => {
 		if (userName !== "" && room !== "") {
 			socket.emit("create_room", room, userName, (callback) => {
@@ -90,7 +89,6 @@ const CreateRoom = () => {
 			}, 1200);
 		}, 1000);
 	};
-	const navJMenu = useNavigate();
 
 	const mainMenu = () => {
 		loadingBar.current.continuousStart(60);

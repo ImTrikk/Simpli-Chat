@@ -20,8 +20,10 @@ const existingRooms = new Map();
 const usersInRoom = new Map();
 const RandomUsers = new Map();
 
+// client establishes a connection
 io.on("connection", (socket) => {
-	// event listeners
+	
+	// event for creating a room
 	socket.on("create_room", (room, username, callback) => {
 		try {
 			if (existingRooms.has(room)) {
@@ -32,7 +34,6 @@ io.on("connection", (socket) => {
 					socket.join(room);
 					existingRooms.set(room, 1);
 					usersInRoom.set(room, [username]);
-					// broadcast
 					socket.to(room).emit("user_joined", username);
 				}
 			}
@@ -41,7 +42,7 @@ io.on("connection", (socket) => {
 		}
 	});
 
-	// join room
+	// event handling for users joining a room
 	socket.on("join_room", (room, user, callback) => {
 		try {
 			if (!existingRooms.has(room)) {
@@ -52,7 +53,7 @@ io.on("connection", (socket) => {
 				if (!usersInRoom.get(room).includes(user)) {
 					socket.join(room);
 					socket.to(room).emit("user_joined", user);
-				usersInRoom.get(room).push(user);
+					usersInRoom.get(room).push(user);
 					if (typeof callback === "function") {
 						callback(true, "Room join");
 					}
@@ -67,7 +68,7 @@ io.on("connection", (socket) => {
 		}
 	});
 
-	// users in room
+	// event for getting all the users in a specific room
 	socket.on("all_usernames", (room) => {
 		try {
 			if (usersInRoom.has(room)) {
@@ -79,21 +80,10 @@ io.on("connection", (socket) => {
 		}
 	});
 
-	//
-	socket.on("create_message", (messageData) => {
-		try {
-			// Emit the message data to the room
-			socket.to(messageData.room).emit("create_message", messageData);
-		} catch (err) {
-			console.error(err);
-		}
-	});
-
-	//
+	// event for handling user leaving the room
 	socket.on("user_left", (data) => {
 		try {
 			const { room, username } = data;
-			// remove the user from the map
 			if (usersInRoom.has(room)) {
 				const usersInThisRoom = usersInRoom.get(room);
 				for (let i = 0; i < usersInThisRoom.length; i++) {
@@ -112,14 +102,27 @@ io.on("connection", (socket) => {
 			console.log(err);
 		}
 	});
+	
+	// event for creating and forwarding message data to clients
+	socket.on("create_message", (messageData) => {
+		try {
+			socket.to(messageData.room).emit("create_message", messageData);
+		} catch (err) {
+			console.error(err);
+		}
+	});
+
 
 	//start the random chat here
 
+	
+	// function for creating a random room
 	function generateUniqueRoomName() {
 		return Math.random().toString(36).substring(2, 10);
 	}
 
-	//
+
+	// event for connecting random chatting users
 	socket.on("random_connect", (username) => {
 		RandomUsers.set(socket.id, 1);
 
@@ -137,17 +140,22 @@ io.on("connection", (socket) => {
 			userSocket1.join(roomName);
 			userSocket2.join(roomName);
 
-			userSocket1.to(roomName).emit("random_user_joined", roomName, (callback) => {
-				if (typeof callback == "function") {
-					callback(true);
-				}
-			});
-			userSocket2.to(roomName).emit("random_user_joined", roomName, (callback) => {
-				if (typeof callback == "function") {
-					callback(true);
-				}
-			});
-
+			userSocket1
+				.to(roomName)
+				.emit("random_user_joined", roomName, username, (callback) => {
+					if (typeof callback == "function") {
+						callback(true);
+					}
+				});
+			
+			userSocket2
+				.to(roomName)
+				.emit("random_user_joined", roomName, username, (callback) => {
+					if (typeof callback == "function") {
+						callback(true);
+					}
+				});
+			
 			// Reset the RandomUsers array for other users to be paired
 			RandomUsers.clear();
 		}
@@ -158,16 +166,13 @@ io.on("connection", (socket) => {
 		RandomUsers.clear(socket.id);
 	});
 
+	// event for creating and recieving a message for the random chatting option
 	socket.on("random_message", (messageData) => {
-		// console.log("Recieved Message: ", messageData);
-		// console.log("This is the room route:", messageData.room);
 		socket.to(messageData.room).emit("random_message", messageData);
 	});
 
 	// socket disconnection of random user
 	socket.on("random_user_disconnect", (data) => {
-		// console.log("Test random user disconnect");
-		// console.log("Room checker: ", data.room);
 		socket.to(data.room).emit("random_user_disconnect", data.username);
 	});
 

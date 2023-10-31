@@ -48,7 +48,7 @@ function RandomChat() {
 	};
 
 	useEffect(() => {
-		socket.on("random_user_joined", (roomName, callback) => {
+		socket.on("random_user_joined", (roomName, username, callback) => {
 			if (callback) {
 				isLoading(false);
 				toast.success("Found a match!", {

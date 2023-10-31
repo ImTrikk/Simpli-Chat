@@ -19,7 +19,6 @@ function JoinRoom() {
 	const [error, setError] = useState(false);
 	const loadingBar = useRef(null);
 
-	// !
 	const joinRoom = async () => {
 		if (userName !== "" && room !== "") {
 			// Send a request to join the room
@@ -188,7 +187,14 @@ function JoinRoom() {
 										</div>
 									</div>
 								</div>
-								<div className="hidden md:block bg-blue-500 h-screen w-full"></div>
+								<div className="hidden bg-blue-500 h-screen w-full md:flex items-center justify-center">
+										<div className="p-10">
+											<div className="mb-5">
+												<h1 className="font-bold text-white text-xl">Create synchronous group chats and join to communicate with different  people</h1>
+											</div>
+										<img src="/images/Join_room_pic.jpg" alt="" className="rounded"/>
+									</div>
+								</div>
 							</div>
 						)}
 						<div className="md:flex items-center justify-center">

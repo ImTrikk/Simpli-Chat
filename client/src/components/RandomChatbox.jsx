@@ -138,7 +138,7 @@ function RandomChatbox({ socket, username, room }) {
 			<ToastContainer autoClose={2000} />
 			<div className="bg-white rounded w-[500px] h-[600px] relative ">
 				<div className="bg-gray-700 p-4 rounded flex items-center justify-between">
-					<h1 className="text-white font-bold text-xl">Chatting {username}</h1>
+					<h1 className="text-white font-bold text-xl">Chatting as {username}</h1>
 					<button
 						onClick={handleDisconnect}
 						className="bg-red-500 text-white rounded px-2 h-10"
